@@ -23,14 +23,28 @@ public class ReaderDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+
+////////////////////////////////    Стоит заглушка на лимит в 50 человек ///////////////////////////////////////////////
     public List<Reader> index() {
-        return jdbcTemplate.query("SELECT * FROM Reader", new BeanPropertyRowMapper<>(Reader.class));
+        return jdbcTemplate.query("SELECT * FROM Reader ORDER BY id LIMIT 50", new BeanPropertyRowMapper<>(Reader.class));
     }
 
-    public Optional<Reader> show(int id) {
+    public Reader show(long id) {
         return jdbcTemplate.query("SELECT * FROM Reader WHERE id=?", new Object[]{id}, new BeanPropertyRowMapper<>(Reader.class))
-                .stream().findAny();
+                .stream().findAny().orElse(null);
     }
+
+    public void save(Reader reader) {
+        jdbcTemplate.update("INSERT INTO Reader(surname, name, email, phone_number) VALUES(?, ?, ?, ?)",
+                reader.getSurname(), reader.getName(), reader.getEmail(), reader.getPhoneNumber());
+    }
+
+    public void update(int id, Reader updatedPerson) {
+        jdbcTemplate.update("UPDATE Reader SET surname=?, name=?, email=?, phone_number=?",
+                updatedPerson.getSurname(), updatedPerson.getName(), updatedPerson.getEmail(), updatedPerson.getPhoneNumber());
+    }
+
+
 
 
     //////////////////////////// Batch update ////////////////////////////

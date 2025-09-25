@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <title>Reader</title>
 </head>
+
 <body>
-<p th:text = "${readers.getSurname() + ', ' + readers.getName()}">VALUE</p>
+<p th:text = "${reader.getSurname() + ' ' + reader.getName()}">VALUE</p>
+<p th:text="'Номер телефона: ' + ${reader.getPhoneNumber()}">VALUE</p>
+<p th:text="'Почта: ' + ${reader.getEmail()}">VALUE</p>
+
 </body>
 </html>
