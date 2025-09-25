@@ -6,17 +6,17 @@ public class Book {
     private long idReader;
     private long idAuthor;
     private String description;
-    private String status;
+    private String name;
 
     public Book() {
     }
 
-    public Book(long id, long idReader, long idAuthor, String description, String status) {
+    public Book(long id, long idReader, long idAuthor, String description, String name) {
         this.id = id;
         this.idReader = idReader;
         this.idAuthor = idAuthor;
         this.description = description;
-        this.status = status;
+        this.name = name;
     }
 
     public long getId() {
@@ -51,11 +51,11 @@ public class Book {
         this.description = description;
     }
 
-    public String getStatus() {
-        return status;
+    public String getName() {
+        return name;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setName(String name) {
+        this.name = name;
     }
 }

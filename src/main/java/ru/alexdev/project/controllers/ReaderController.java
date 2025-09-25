@@ -28,7 +28,7 @@ public class ReaderController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("reader", readerDAO.show(id));
-        return "people/show";
+        model.addAttribute("readers", readerDAO.show(id));
+        return "readers/show";
     }
 }
