@@ -4,10 +4,9 @@ import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.alexdev.project.dao.ReaderDAO;
+import ru.alexdev.project.models.Reader;
 
 @Controller
 @RequestMapping("/readers")
@@ -31,4 +30,17 @@ public class ReaderController {
         model.addAttribute("reader", readerDAO.show(id));
         return "readers/show";
     }
+
+    @PostMapping()
+    public String create(@ModelAttribute("reader") Reader reader) {
+        readerDAO.save(reader);
+        return "redirect:/readers";
+    }
+
+    @GetMapping("/new")
+    public String newReader(@ModelAttribute("reader") Reader reader) {
+        return "readers/new";
+    }
+
+
 }

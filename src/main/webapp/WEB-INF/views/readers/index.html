@@ -8,5 +8,9 @@
 <div th:each="reader : ${readers}">
     <a th:href="@{/readers/{id}(id = ${reader.getId()})}" th:text="${reader.getSurname() + ' ' + reader.getName()}">VALUE</a>
 </div>
+
+<hr/>
+
+<a href="/readers/new">Добавить нового человека</a>
 </body>
 </html>
