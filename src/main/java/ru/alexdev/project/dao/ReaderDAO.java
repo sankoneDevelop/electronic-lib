@@ -18,6 +18,7 @@ public class ReaderDAO {
 
     private final JdbcTemplate jdbcTemplate;
 
+
     @Autowired
     public ReaderDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
