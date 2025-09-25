@@ -6,5 +6,12 @@
 </head>
 <body>
 
+<form th:method="POST" th:action="@{/authors}" th:object="${author}">
+    <label for="fullname">Введите полное имя автора: </label>
+    <input type="text"  th:field="*{fullName}" id="fullname">
+
+    <input type="submit" value="Создать!">
+</form>
+
 </body>
 </html>

@@ -9,5 +9,7 @@
     <a th:href="@{/authors/{id}(id=${author.getId()})}" th:text="${author.getFullName()}">VALUE</a>
 </div>
 <hr/>
+
+<a th:href="@{/authors/new}">Создать нового автора</a>
 </body>
 </html>

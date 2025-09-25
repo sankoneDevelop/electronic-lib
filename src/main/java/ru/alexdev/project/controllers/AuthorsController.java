@@ -48,7 +48,7 @@ public class AuthorsController {
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(@PathVariable("id") int id, Model model) {
+    public String edit(@PathVariable("id") long id, Model model) {
         model.addAttribute("author", authorDAO.show(id));
         return "authors/edit";
     }

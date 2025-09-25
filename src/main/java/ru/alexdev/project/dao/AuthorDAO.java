@@ -22,20 +22,20 @@ public class AuthorDAO {
         return jdbcTemplate.query("SELECT * FROM Author", new BeanPropertyRowMapper<>(Author.class));
     }
 
-    public Author show(int id) {
+    public Author show(long id) {
         return jdbcTemplate.query("SELECT * FROM Author WHERE id=?", new Object[]{id}, new BeanPropertyRowMapper<>(Author.class))
                 .stream().findAny().orElse(null);
     }
 
     public void save(Author author) {
-        jdbcTemplate.update("INSERT INTO Author(full_name) VALUE(?)", author.getFullName());
+        jdbcTemplate.update("INSERT INTO Author(full_name) VALUES(?)", author.getFullName());
     }
 
-    public void update(int id, Author updatedAuthor) {
+    public void update(long id, Author updatedAuthor) {
         jdbcTemplate.update("UPDATE Author SET full_name=? WHERE id=?", updatedAuthor.getFullName(), id);
     }
 
-    public void delete(int id) {
+    public void delete(long id) {
         jdbcTemplate.update("DELETE FROM Author WHERE id=?", id);
     }
 
