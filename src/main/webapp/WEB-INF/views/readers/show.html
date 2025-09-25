@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reader</title>
+</head>
+
+<body>
+<p th:text = "${reader.getSurname() + ' ' + reader.getName()}">VALUE</p>
+<p th:text="'Номер телефона: ' + ${reader.getPhoneNumber()}">VALUE</p>
+<p th:text="'Почта: ' + ${reader.getEmail()}">VALUE</p>
+
+<a th:href="@{/readers/{id}/edit(id=${reader.getId()})}">Edit</a>
+
+<form th:method="DELETE" th:action="@{/readers/{id}(id=${reader.getId()})}">
+    <input type="submit" VALUE="Удалить человека">
+</form>
+
+</body>
+</html>
