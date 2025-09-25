@@ -2,22 +2,22 @@ package ru.alexdev.project.models;
 
 public class Author {
 
-    private long id;
+    private int id;
     private String fullName;
 
     public Author() {
     }
 
-    public Author(Long id, String fullName) {
+    public Author(int id, String fullName) {
         this.id = id;
         this.fullName = fullName;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

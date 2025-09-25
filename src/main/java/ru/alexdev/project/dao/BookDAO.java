@@ -19,24 +19,43 @@ public class BookDAO {
     }
 
     public List<Book> index() {
-        return jdbcTemplate.query("SELECT * FROM Book", new BeanPropertyRowMapper<>(Book.class));
+        return jdbcTemplate.query(
+                "SELECT id, id_reader AS idReader, id_author AS idAuthor, name, description FROM book",
+                new BeanPropertyRowMapper<>(Book.class)
+        );
     }
 
-    public Book show(long id) {
-        return jdbcTemplate.query("SELECT * FROM Book WHERE id=?", new Object[]{id}, new BeanPropertyRowMapper<>(Book.class))
-                .stream().findAny().orElse(null);
+    public Book show(int id) {
+        return jdbcTemplate.query(
+                "SELECT id, id_reader AS idReader, id_author AS idAuthor, name, description FROM book WHERE id=?",
+                new Object[]{id},
+                new BeanPropertyRowMapper<>(Book.class)
+        ).stream().findAny().orElse(null);
     }
 
     public void save(Book book) {
-        jdbcTemplate.update("INSERT INTO Book(id_author, description, name) VALUES (?, ?, ?)", book.getIdAuthor(), book.getDescription(), book.getName());
+        jdbcTemplate.update(
+                "INSERT INTO book(name, description, id_reader, id_author) VALUES (?, ?, ?, ?)",
+                book.getName(),
+                book.getDescription(),
+                book.getIdReader(),
+                book.getIdAuthor()
+        );
     }
 
-    public void update(long id, Book book) {
-        jdbcTemplate.update("UPDATE Book SET id_author=?, description=?, name=? WHERE id=?", book.getIdAuthor(), book.getDescription(), book.getName(), book.getId());
+    public void update(int id, Book book) {
+        jdbcTemplate.update(
+                "UPDATE book SET name=?, description=?, id_reader=?, id_author=? WHERE id=?",
+                book.getName(),
+                book.getDescription(),
+                book.getIdReader(),
+                book.getIdAuthor(),
+                id
+        );
     }
 
-    public void delete(long id) {
-        jdbcTemplate.update("DELETE FROM Book WHERE id=?", id);
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM book WHERE id=?", id);
     }
-
 }
+

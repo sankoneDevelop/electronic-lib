@@ -2,16 +2,15 @@ package ru.alexdev.project.models;
 
 public class Book {
 
-    private long id;
-    private long idReader;
-    private long idAuthor;
+    private Integer id;
+    private Integer idReader;
+    private Integer idAuthor;
     private String description;
     private String name;
 
-    public Book() {
-    }
+    public Book() {}
 
-    public Book(long id, long idReader, long idAuthor, String description, String name) {
+    public Book(Integer id, Integer idReader, Integer idAuthor, String description, String name) {
         this.id = id;
         this.idReader = idReader;
         this.idAuthor = idAuthor;
@@ -19,43 +18,18 @@ public class Book {
         this.name = name;
     }
 
-    public long getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    public Integer getIdReader() { return idReader; }
+    public void setIdReader(Integer idReader) { this.idReader = idReader; }
 
-    public long getIdReader() {
-        return idReader;
-    }
+    public Integer getIdAuthor() { return idAuthor; }
+    public void setIdAuthor(Integer idAuthor) { this.idAuthor = idAuthor; }
 
-    public void setIdReader(long idReader) {
-        this.idReader = idReader;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public long getIdAuthor() {
-        return idAuthor;
-    }
-
-    public void setIdAuthor(long idAuthor) {
-        this.idAuthor = idAuthor;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 }
