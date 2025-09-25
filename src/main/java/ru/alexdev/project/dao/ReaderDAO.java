@@ -44,6 +44,10 @@ public class ReaderDAO {
                 updatedPerson.getSurname(), updatedPerson.getName(), updatedPerson.getEmail(), updatedPerson.getPhoneNumber());
     }
 
+    public void delete(long id) {
+        jdbcTemplate.update("DELETE FROM Reader WHERE id=?", id);
+    }
+
 
 
 
