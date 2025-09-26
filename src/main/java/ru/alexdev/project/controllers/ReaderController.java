@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.alexdev.project.dao.BookDAO;
 import ru.alexdev.project.dao.ReaderDAO;
 import ru.alexdev.project.models.Reader;
 
@@ -14,11 +15,13 @@ import ru.alexdev.project.models.Reader;
 public class ReaderController {
 
     private final ReaderDAO readerDAO;
+    private final BookDAO bookDAO;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public ReaderController(ReaderDAO readerDAO, JdbcTemplate jdbcTemplate) {
+    public ReaderController(ReaderDAO readerDAO, BookDAO bookDAO, JdbcTemplate jdbcTemplate) {
         this.readerDAO = readerDAO;
+        this.bookDAO = bookDAO;
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -29,8 +32,9 @@ public class ReaderController {
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") long id, Model model) {
+    public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("reader", readerDAO.show(id));
+        model.addAttribute("books", bookDAO.getBooksByReaderId(id));
         return "readers/show";
     }
 
