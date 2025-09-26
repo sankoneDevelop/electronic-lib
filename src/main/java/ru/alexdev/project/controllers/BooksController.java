@@ -29,14 +29,17 @@ public class BooksController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("book", bookDAO.show(id));
-        model.addAttribute("author", authorDAO.show((bookDAO.show(id)).getIdAuthor()));
+        Book book = bookDAO.show(id);
+        model.addAttribute("book", book);
+        model.addAttribute("author", authorDAO.show(book.getIdAuthor()));
         return "books/show";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        model.addAttribute("book", bookDAO.show(id));
+        Book book = bookDAO.show(id);
+        model.addAttribute("book", book);
+        model.addAttribute("authors", authorDAO.index());
         return "books/edit";
     }
 
