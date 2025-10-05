@@ -56,36 +56,36 @@ public class ReaderDAO {
 
     //////////////////////////// Batch update ////////////////////////////
 
-    public void batchUpdate() {
-        List<Reader> readers = create1000Reader();
-
-        jdbcTemplate.batchUpdate("INSERT INTO Reader VALUES(?, ?, ?, ?, ?)", new BatchPreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps, int i) throws SQLException {
-                ps.setLong(1, readers.get(i).getId());
-                ps.setString(2, readers.get(i).getSurname());
-                ps.setString(3, readers.get(i).getName());
-                ps.setString(4, readers.get(i).getEmail());
-                ps.setString(5, readers.get(i).getPhoneNumber());
-            }
-
-            @Override
-            public int getBatchSize() {
-                return readers.size();
-            }
-        });
-
-    }
-
-    private List<Reader> create1000Reader() {
-        List<Reader>  readers = new ArrayList<>();
-
-        for (int i = 0; i < 1000; i++) {
-            readers.add(new Reader(i, "Surname" + i, "Name" + i, "test" + i + "@test.com", "Number" + i));
-        }
-
-        return readers;
-    }
+//    public void batchUpdate() {
+//        List<Reader> readers = create1000Reader();
+//
+//        jdbcTemplate.batchUpdate("INSERT INTO Reader VALUES(?, ?, ?, ?, ?)", new BatchPreparedStatementSetter() {
+//            @Override
+//            public void setValues(PreparedStatement ps, int i) throws SQLException {
+//                ps.setLong(1, readers.get(i).getId());
+//                ps.setString(2, readers.get(i).getSurname());
+//                ps.setString(3, readers.get(i).getName());
+//                ps.setString(4, readers.get(i).getEmail());
+//                ps.setString(5, readers.get(i).getPhoneNumber());
+//            }
+//
+//            @Override
+//            public int getBatchSize() {
+//                return readers.size();
+//            }
+//        });
+//
+//    }
+//
+//    private List<Reader> create1000Reader() {
+//        List<Reader>  readers = new ArrayList<>();
+//
+//        for (int i = 0; i < 1000; i++) {
+//            readers.add(new Reader(i, "Surname" + i, "Name" + i, "test" + i + "@test.com", "Number" + i));
+//        }
+//
+//        return readers;
+//    }
 
 
 

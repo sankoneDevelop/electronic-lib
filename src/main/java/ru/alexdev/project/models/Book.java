@@ -2,6 +2,8 @@ package ru.alexdev.project.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "Book")
 public class Book {
@@ -11,9 +13,13 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
-    @Column(name = "id_reader")
-    private int idReader;
+    @ManyToMany
+    @JoinTable(
+            name = "book_reader",
+            joinColumns = @JoinColumn(name = "id_book"),
+            inverseJoinColumns = @JoinColumn(name = "id_reader")
+    )
+    private List<Reader> readers;
 
     @ManyToOne
     @JoinColumn(name = "id_author", referencedColumnName = "id")
@@ -35,8 +41,13 @@ public class Book {
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
-    public int getIdReader() { return idReader; }
-    public void setIdReader(int idReader) { this.idReader = idReader; }
+    public List<Reader> getReaders() {
+        return readers;
+    }
+
+    public void setReaders(List<Reader> readers) {
+        this.readers = readers;
+    }
 
     public Author getAuthor() {
         return author;

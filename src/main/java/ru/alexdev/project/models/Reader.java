@@ -1,18 +1,37 @@
 package ru.alexdev.project.models;
 
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
+@Table(name = "Reader")
 public class Reader {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "surname")
     private String surname;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
+
+    @ManyToMany(mappedBy = "readers")
+    private List<Book> books;
 
     public Reader() {
     }
 
-    public Reader(long id, String surname, String name, String email, String phoneNumber) {
-        this.id = id;
+    public Reader(String surname, String name, String email, String phoneNumber) {
         this.surname = surname;
         this.name = name;
         this.email = email;

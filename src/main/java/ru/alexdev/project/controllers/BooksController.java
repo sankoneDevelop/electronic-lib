@@ -27,13 +27,13 @@ public class BooksController {
         return "books/index";
     }
 
-    @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
-        Book book = bookDAO.show(id);
-        model.addAttribute("book", book);
-        model.addAttribute("author", authorDAO.show(book.getIdAuthor()));
-        return "books/show";
-    }
+//    @GetMapping("/{id}")
+//    public String show(@PathVariable("id") int id, Model model) {
+//        Book book = bookDAO.show(id);
+//        model.addAttribute("book", book);
+//        model.addAttribute("author", authorDAO.show(book.getIdAuthor()));
+//        return "books/show";
+//    }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {

@@ -22,9 +22,9 @@ public class BatchController {
         return "batch/index";
     }
 
-    @GetMapping("/update")
-    public String batchUpdate() {
-        readerDAO.batchUpdate();
-        return "redirect:/readers";
-    }
+//    @GetMapping("/update")
+//    public String batchUpdate() {
+//        readerDAO.batchUpdate();
+//        return "redirect:/readers";
+//    }
 }
