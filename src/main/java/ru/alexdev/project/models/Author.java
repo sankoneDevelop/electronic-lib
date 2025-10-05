@@ -1,15 +1,28 @@
 package ru.alexdev.project.models;
 
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
+@Table(name = "Author")
 public class Author {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "full_name")
     private String fullName;
+
+    @OneToMany(mappedBy = "author")
+    private List<Book> books;
 
     public Author() {
     }
 
-    public Author(int id, String fullName) {
-        this.id = id;
+    public Author(String fullName) {
         this.fullName = fullName;
     }
 
@@ -27,5 +40,13 @@ public class Author {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 }

@@ -1,31 +1,50 @@
 package ru.alexdev.project.models;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Book")
 public class Book {
 
-    private Integer id;
-    private Integer idReader;
-    private Integer idAuthor;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+
+    @Column(name = "id_reader")
+    private int idReader;
+
+    @ManyToOne
+    @JoinColumn(name = "id_author", referencedColumnName = "id")
+    private Author author;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "name")
     private String name;
 
     public Book() {}
 
-    public Book(Integer id, Integer idReader, Integer idAuthor, String description, String name) {
-        this.id = id;
-        this.idReader = idReader;
-        this.idAuthor = idAuthor;
+    public Book(String description, String name) {
         this.description = description;
         this.name = name;
     }
 
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public Integer getIdReader() { return idReader; }
-    public void setIdReader(Integer idReader) { this.idReader = idReader; }
+    public int getIdReader() { return idReader; }
+    public void setIdReader(int idReader) { this.idReader = idReader; }
 
-    public Integer getIdAuthor() { return idAuthor; }
-    public void setIdAuthor(Integer idAuthor) { this.idAuthor = idAuthor; }
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
