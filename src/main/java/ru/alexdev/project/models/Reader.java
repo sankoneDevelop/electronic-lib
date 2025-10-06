@@ -29,7 +29,13 @@ public class Reader {
     private List<Book> books;
 
     @OneToMany(mappedBy = "reader")
-    private List<Booking> bookings;
+    private List<ReadingSession> readingSessions;
+
+    @OneToMany(mappedBy = "reader")
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "reader")
+    private List<Logs> logs;
 
     public Reader() {
     }
@@ -79,5 +85,37 @@ public class Reader {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    public List<ReadingSession> getReadingSessions() {
+        return readingSessions;
+    }
+
+    public void setReadingSessions(List<ReadingSession> readingSessions) {
+        this.readingSessions = readingSessions;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<Logs> getLogs() {
+        return logs;
+    }
+
+    public void setLogs(List<Logs> logs) {
+        this.logs = logs;
     }
 }

@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Booking")
-public class Booking {
+public class ReadingSession {
 
     @Id
     @Column(name = "id")
@@ -22,18 +22,18 @@ public class Booking {
     private Reader reader;
 
     @Column(name = "date")
-    private LocalDateTime date;
+    private LocalDateTime startDate;
 
     @Column(name = "return_date")
-    private LocalDateTime returnDate;
+    private LocalDateTime finishDate;
 
 
-    public Booking() {
+    public ReadingSession() {
     }
 
-    public Booking(LocalDateTime date, LocalDateTime returnDate) {
-        this.date = date;
-        this.returnDate = returnDate;
+    public ReadingSession(LocalDateTime startDate, LocalDateTime finishDate) {
+        this.startDate = startDate;
+        this.finishDate = finishDate;
     }
 
     public int getId() {
@@ -60,21 +60,23 @@ public class Booking {
         this.reader = reader;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setStartDate(LocalDateTime date) {
+        this.startDate = date;
     }
 
 
 
-    public LocalDateTime getReturnDate() {
-        return returnDate;
+    public LocalDateTime getFinishDate() {
+        return finishDate;
     }
 
-    public void setReturnDate(LocalDateTime returnDate) {
-        this.returnDate = returnDate;
+    public void setFinishDate(LocalDateTime returnDate) {
+        this.finishDate = returnDate;
     }
+
+
 }

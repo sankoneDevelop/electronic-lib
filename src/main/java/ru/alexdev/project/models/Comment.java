@@ -1,20 +1,34 @@
 package ru.alexdev.project.models;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Comment")
 public class Comment {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long idBook;
-    private long idReader;
+
+    @ManyToOne
+    @JoinColumn(name = "id_book", referencedColumnName = "id")
+    private Book book;
+
+    @ManyToOne
+    @JoinColumn(name = "id_reader", referencedColumnName = "id")
+    private Reader reader;
+
+    @Column(name = "rating")
     private int rating;
+
+    @Column(name = "text")
     private String text;
 
     public Comment() {
     }
 
-    public Comment(long id, long idBook, long idReader, int rating, String text) {
-        this.id = id;
-        this.idBook = idBook;
-        this.idReader = idReader;
+    public Comment(int rating, String text) {
         this.rating = rating;
         this.text = text;
     }
@@ -27,21 +41,6 @@ public class Comment {
         this.id = id;
     }
 
-    public long getIdBook() {
-        return idBook;
-    }
-
-    public void setIdBook(long idBook) {
-        this.idBook = idBook;
-    }
-
-    public long getIdReader() {
-        return idReader;
-    }
-
-    public void setIdReader(long idReader) {
-        this.idReader = idReader;
-    }
 
     public int getRating() {
         return rating;
@@ -58,4 +57,22 @@ public class Comment {
     public void setText(String text) {
         this.text = text;
     }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public Reader getReader() {
+        return reader;
+    }
+
+    public void setReader(Reader reader) {
+        this.reader = reader;
+    }
+
+
 }

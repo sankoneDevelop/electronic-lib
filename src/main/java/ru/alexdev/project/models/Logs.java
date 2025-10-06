@@ -1,20 +1,32 @@
 package ru.alexdev.project.models;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "Logs")
 public class Logs {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long idReader;
+
+    @ManyToOne
+    @JoinColumn(name = "id_reader", referencedColumnName = "id")
+    private Reader reader;
+
     private String actionType; // To Do - сменить на Enum
+
     private LocalDateTime timestamp;
+
 
     public Logs() {
     }
 
-    public Logs(long id, long idReader, String actionType, LocalDateTime timestamp) {
+    public Logs(long id, String actionType, LocalDateTime timestamp) {
         this.id = id;
-        this.idReader = idReader;
         this.actionType = actionType;
         this.timestamp = timestamp;
     }
@@ -25,14 +37,6 @@ public class Logs {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getIdReader() {
-        return idReader;
-    }
-
-    public void setIdReader(long idReader) {
-        this.idReader = idReader;
     }
 
     public String getActionType() {
@@ -49,5 +53,13 @@ public class Logs {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Reader getReader() {
+        return reader;
+    }
+
+    public void setReader(Reader reader) {
+        this.reader = reader;
     }
 }

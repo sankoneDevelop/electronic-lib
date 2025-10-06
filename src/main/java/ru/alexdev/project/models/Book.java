@@ -13,17 +13,6 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToMany
-    @JoinTable(
-            name = "book_reader",
-            joinColumns = @JoinColumn(name = "id_book"),
-            inverseJoinColumns = @JoinColumn(name = "id_reader")
-    )
-    private List<Reader> readers;
-
-    @OneToMany(mappedBy = "book")
-    private List<Booking> bookings;
-
     @ManyToOne
     @JoinColumn(name = "id_author", referencedColumnName = "id")
     private Author author;
@@ -33,6 +22,28 @@ public class Book {
 
     @Column(name = "name")
     private String name;
+
+    @ManyToMany
+    @JoinTable(
+            name = "book_reader",
+            joinColumns = @JoinColumn(name = "id_book"),
+            inverseJoinColumns = @JoinColumn(name = "id_reader")
+    )
+    private List<Reader> readers;
+
+    @OneToMany(mappedBy = "book")
+    private List<ReadingSession> readingSessions;
+
+    @OneToMany(mappedBy = "book")
+    private List<Comment> comments;
+
+    @ManyToMany
+    @JoinTable(
+            name = "book_genre",
+            joinColumns = @JoinColumn(name = "id_book"),
+            inverseJoinColumns = @JoinColumn(name = "id_genre")
+    )
+    private List<Genre> genres;
 
     public Book() {}
 
@@ -65,4 +76,20 @@ public class Book {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public List<ReadingSession> getReadingSessions() {
+        return readingSessions;
+    }
+
+    public void setReadingSessions(List<ReadingSession> readingSessions) {
+        this.readingSessions = readingSessions;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 }
