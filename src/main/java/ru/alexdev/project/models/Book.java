@@ -21,6 +21,9 @@ public class Book {
     )
     private List<Reader> readers;
 
+    @OneToMany(mappedBy = "book")
+    private List<Booking> bookings;
+
     @ManyToOne
     @JoinColumn(name = "id_author", referencedColumnName = "id")
     private Author author;

@@ -1,41 +1,63 @@
 package ru.alexdev.project.models;
 
-import java.time.LocalDate;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "Booking")
 public class Booking {
 
-    private long idBook;
-    private long idReader;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @ManyToOne
+    @JoinColumn(name = "id_book", referencedColumnName = "id")
+    private Book book;
+
+    @ManyToOne
+    @JoinColumn(name = "id_reader", referencedColumnName = "id")
+    private Reader reader;
+
+    @Column(name = "date")
     private LocalDateTime date;
-    private LocalDateTime dueDate;
+
+    @Column(name = "return_date")
     private LocalDateTime returnDate;
+
 
     public Booking() {
     }
 
-    public Booking(long idBook, long idReader, LocalDateTime date, LocalDateTime dueDate, LocalDateTime returnDate) {
-        this.idBook = idBook;
-        this.idReader = idReader;
+    public Booking(LocalDateTime date, LocalDateTime returnDate) {
         this.date = date;
-        this.dueDate = dueDate;
         this.returnDate = returnDate;
     }
 
-    public long getIdBook() {
-        return idBook;
+    public int getId() {
+        return id;
     }
 
-    public void setIdBook(long idBook) {
-        this.idBook = idBook;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public long getIdReader() {
-        return idReader;
+    public Book getBook() {
+        return book;
     }
 
-    public void setIdReader(long idReader) {
-        this.idReader = idReader;
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public Reader getReader() {
+        return reader;
+    }
+
+    public void setReader(Reader reader) {
+        this.reader = reader;
     }
 
     public LocalDateTime getDate() {
@@ -46,13 +68,7 @@ public class Booking {
         this.date = date;
     }
 
-    public LocalDateTime getDueDate() {
-        return dueDate;
-    }
 
-    public void setDueDate(LocalDateTime dueDate) {
-        this.dueDate = dueDate;
-    }
 
     public LocalDateTime getReturnDate() {
         return returnDate;

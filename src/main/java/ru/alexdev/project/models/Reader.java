@@ -28,6 +28,9 @@ public class Reader {
     @ManyToMany(mappedBy = "readers")
     private List<Book> books;
 
+    @OneToMany(mappedBy = "reader")
+    private List<Booking> bookings;
+
     public Reader() {
     }
 
