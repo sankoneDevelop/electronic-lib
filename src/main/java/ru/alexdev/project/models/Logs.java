@@ -17,6 +17,10 @@ public class Logs {
     @JoinColumn(name = "id_reader", referencedColumnName = "id")
     private Reader reader;
 
+    @ManyToOne
+    @JoinColumn(name = "id_book", referencedColumnName = "id")
+    private Book book;
+
     private String actionType; // To Do - сменить на Enum
 
     private LocalDateTime timestamp;
@@ -62,4 +66,14 @@ public class Logs {
     public void setReader(Reader reader) {
         this.reader = reader;
     }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+
 }

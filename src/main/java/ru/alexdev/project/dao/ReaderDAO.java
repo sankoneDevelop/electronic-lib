@@ -1,5 +1,8 @@
 package ru.alexdev.project.dao;
 
+import jakarta.transaction.Transactional;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -16,36 +19,55 @@ import java.util.Optional;
 @Component
 public class ReaderDAO {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final SessionFactory sessionFactory;
 
     @Autowired
-    public ReaderDAO(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public ReaderDAO(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
 
-////////////////////////////////    Стоит заглушка на лимит в 50 человек ///////////////////////////////////////////////
+    @Transactional
     public List<Reader> index() {
-        return jdbcTemplate.query("SELECT * FROM Reader ORDER BY id LIMIT 50", new BeanPropertyRowMapper<>(Reader.class));
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery("FROM Reader", Reader.class).getResultList();
     }
 
+    @Transactional
     public Reader show(long id) {
-        return jdbcTemplate.query("SELECT * FROM Reader WHERE id=?", new Object[]{id}, new BeanPropertyRowMapper<>(Reader.class))
-                .stream().findAny().orElse(null);
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.get(Reader.class, id);
     }
 
+    @Transactional
     public void save(Reader reader) {
-        jdbcTemplate.update("INSERT INTO Reader(surname, name, email, phone_number) VALUES(?, ?, ?, ?)",
-                reader.getSurname(), reader.getName(), reader.getEmail(), reader.getPhoneNumber());
+        Session session = sessionFactory.getCurrentSession();
+
+        session.save(reader);
     }
 
+    @Transactional
     public void update(int id, Reader updatedPerson) {
-        jdbcTemplate.update("UPDATE Reader SET surname=?, name=?, email=?, phone_number=?",
-                updatedPerson.getSurname(), updatedPerson.getName(), updatedPerson.getEmail(), updatedPerson.getPhoneNumber());
+        Session session = sessionFactory.getCurrentSession();
+
+        Reader reader = session.get(Reader.class, id);
+
+        reader.setEmail(updatedPerson.getEmail());
+        reader.setName(updatedPerson.getName());
+        reader.setSurname(updatedPerson.getSurname());
+        reader.setPhoneNumber(updatedPerson.getPhoneNumber());
+
+
     }
 
+    @Transactional
     public void delete(long id) {
-        jdbcTemplate.update("DELETE FROM Reader WHERE id=?", id);
+        Session session = sessionFactory.getCurrentSession();
+
+        session.delete(session.get(Reader.class, id));
+
     }
 
 

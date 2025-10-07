@@ -45,6 +45,9 @@ public class Book {
     )
     private List<Genre> genres;
 
+    @OneToMany(mappedBy = "book")
+    private List<Logs> logs;
+
     public Book() {}
 
     public Book(String description, String name) {
@@ -91,5 +94,21 @@ public class Book {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
+    }
+
+    public List<Logs> getLogs() {
+        return logs;
+    }
+
+    public void setLogs(List<Logs> logs) {
+        this.logs = logs;
     }
 }
