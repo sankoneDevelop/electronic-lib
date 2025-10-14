@@ -21,7 +21,9 @@ public class Logs {
     @JoinColumn(name = "id_book", referencedColumnName = "id")
     private Book book;
 
-    private String actionType; // To Do - сменить на Enum
+    @Enumerated(EnumType.STRING)
+    @Column(name = "log_type")
+    private LogType logType;
 
     private LocalDateTime timestamp;
 
@@ -29,9 +31,8 @@ public class Logs {
     public Logs() {
     }
 
-    public Logs(long id, String actionType, LocalDateTime timestamp) {
+    public Logs(long id, LocalDateTime timestamp) {
         this.id = id;
-        this.actionType = actionType;
         this.timestamp = timestamp;
     }
 
@@ -41,14 +42,6 @@ public class Logs {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getActionType() {
-        return actionType;
-    }
-
-    public void setActionType(String actionType) {
-        this.actionType = actionType;
     }
 
     public LocalDateTime getTimestamp() {
@@ -74,6 +67,5 @@ public class Logs {
     public void setBook(Book book) {
         this.book = book;
     }
-
 
 }
