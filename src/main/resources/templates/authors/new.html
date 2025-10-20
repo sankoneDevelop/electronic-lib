@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title> author</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/authors}" th:object="${author}">
+    <label for="fullname">Введите полное имя автора: </label>
+    <input type="text"  th:field="*{fullName}" id="fullname">
+
+    <input type="submit" value="Создать!">
+</form>
+
+</body>
+</html>

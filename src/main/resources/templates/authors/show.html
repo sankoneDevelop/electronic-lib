@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Author</title>
+</head>
+<body>
+
+<p th:text="${author.getFullName()}">VALUE</p>
+<hr/>
+<a th:href="@{/authors/{id}/edit(id=${author.getId()})}">Edit</a>
+
+<form th:method="DELETE" th:action="@{/authors/{id}(id=${author.getId()})}">
+    <input type="submit" VALUE="Удалить автора">
+</form>
+</body>
+</html>
