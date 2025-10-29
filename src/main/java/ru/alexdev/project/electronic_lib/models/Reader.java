@@ -37,6 +37,9 @@ public class Reader {
     @OneToMany(mappedBy = "reader")
     private List<Logs> logs;
 
+    @OneToOne(mappedBy = "reader")
+    private AuthUser authUser;
+
     public Reader() {
     }
 
@@ -117,5 +120,13 @@ public class Reader {
 
     public void setLogs(List<Logs> logs) {
         this.logs = logs;
+    }
+
+    public AuthUser getAuthUser() {
+        return authUser;
+    }
+
+    public void setAuthUser(AuthUser authUser) {
+        this.authUser = authUser;
     }
 }
