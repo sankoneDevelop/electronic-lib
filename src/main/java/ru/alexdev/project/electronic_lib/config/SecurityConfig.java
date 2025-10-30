@@ -12,30 +12,33 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.alexdev.project.electronic_lib.services.AuthUserDetailsService;
+import ru.alexdev.project.electronic_lib.services.AuthUserService;
 
 @EnableWebSecurity
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private final PersonDetailsService personDetailsService;
+    private final AuthUserDetailsService authUserDetailsService;
 
     @Autowired
-    public SecurityConfig(PersonDetailsService personDetailsService) {
-        this.personDetailsService = personDetailsService;
+    public SecurityConfig(AuthUserDetailsService authUserDetailsService) {
+        this.authUserDetailsService = authUserDetailsService;
     }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/auth/registration").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .anyRequest().hasAnyRole("USER", "ADMIN"))
 
                 .formLogin(form -> form
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/process_login")
-                        .defaultSuccessUrl("/hello", true)
+                        .defaultSuccessUrl("/main", true)
                         .failureUrl("/auth/login?error"))
 
                 .logout(logout -> logout
@@ -52,7 +55,7 @@ public class SecurityConfig {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
         // Используй этот сервис для поиска пользователей
-        authProvider.setUserDetailsService(personDetailsService);
+        authProvider.setUserDetailsService(authUserDetailsService);
 
         // Используй этот кодировщик проверки паролей
         authProvider.setPasswordEncoder(getPasswordEncoder());
