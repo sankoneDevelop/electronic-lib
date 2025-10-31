@@ -3,6 +3,7 @@ package ru.alexdev.project.electronic_lib.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -33,6 +34,14 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/authors/new", "/authors/*/edit", "/authors/*/delete").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/authors/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/authors/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/authors/**").hasRole("ADMIN")
+
+                        .requestMatchers("/authors/**").hasAnyRole("USER", "ADMIN")
+
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().hasAnyRole("USER", "ADMIN"))
 
                 .formLogin(form -> form
@@ -43,7 +52,10 @@ public class SecurityConfig {
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/auth/login")); // Настройка формы
+                        .logoutSuccessUrl("/auth/login"))
+                .exceptionHandling( exception -> exception
+                        .accessDeniedPage("/access-denied"));
+
 
         return http.build();
     }

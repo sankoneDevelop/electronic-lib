@@ -25,8 +25,8 @@ public class ReaderService {
         return readerRepository.findAll();
     }
 
-    public Optional<Reader> findOne(int id) {
-        return readerRepository.findById(id);
+    public Reader findOne(int id) {
+        return readerRepository.findById(id).orElse(null);
     }
 
     public void save(Reader reader) {

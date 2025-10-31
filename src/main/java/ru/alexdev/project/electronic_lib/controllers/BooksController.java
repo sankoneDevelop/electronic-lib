@@ -39,7 +39,7 @@ public class BooksController {
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        Optional<Book> book = bookService.findOne(id);
+        Book book = bookService.findOne(id);
         model.addAttribute("book", book);
         model.addAttribute("authors", authorService.findAll());
         return "books/edit";

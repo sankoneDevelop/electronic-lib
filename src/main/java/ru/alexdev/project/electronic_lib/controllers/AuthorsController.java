@@ -28,7 +28,9 @@ public class AuthorsController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("author", authorService.findOne(id));
+        var author = authorService.findOne(id);
+        System.out.println("AUTHOR FOUND: " + author);
+        model.addAttribute("author", author);
         return "authors/show";
     }
 

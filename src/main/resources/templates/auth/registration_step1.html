@@ -5,7 +5,7 @@
     <title>Registration</title>
 </head>
 <body>
-<form th:method="POST" th:action="@{/auth/registration}" th:object="${authUser}">
+<form th:method="POST" th:action="@{/auth/registration-step1}" th:object="${authUser}">
 
     <label for="username">Введите имя пользователя: </label>
     <input type="text" th:field="*{username}" id="username">
@@ -15,7 +15,7 @@
     <input type="password" th:field="*{password}" id="password">
     <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
     <br/>
-    <input type="submit" value="Sigh up!">
+    <input type="submit" value="Next step!">
 
 </form>
 </body>

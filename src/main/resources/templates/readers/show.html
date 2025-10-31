@@ -11,7 +11,7 @@
 <p th:text="'Почта: ' + ${reader.getEmail()}">VALUE</p>
 
 <hr>
-<p th:if="${#lists.isEmpty(books)}">У читателя отсутствуют активные книги.</p>
+<!--<p th:if="${#lists.isEmpty(books)}">У читателя отсутствуют активные книги.</p>
 
 <ul th:if="${!#lists.isEmpty(books)}">
     <li th:each="book : ${books}">
@@ -23,7 +23,7 @@
 
 <form th:method="DELETE" th:action="@{/readers/{id}(id=${reader.getId()})}">
     <input type="submit" VALUE="Удалить человека">
-</form>
+</form>-->
 
 </body>
 </html>

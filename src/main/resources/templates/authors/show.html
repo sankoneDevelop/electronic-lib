@@ -6,12 +6,12 @@
 </head>
 <body>
 
-<p th:text="${author.getFullName()}">VALUE</p>
+<p th:text="${author.fullName}">VALUE</p>
 <hr/>
-<a th:href="@{/authors/{id}/edit(id=${author.getId()})}">Edit</a>
+<!--<a th:href="@{/authors/{id}/edit(id=${author.id})}">Edit</a>
 
-<form th:method="DELETE" th:action="@{/authors/{id}(id=${author.getId()})}">
+<form th:method="DELETE" th:action="@{/authors/{id}(id=${author.id})}">
     <input type="submit" VALUE="Удалить автора">
-</form>
+</form>-->
 </body>
 </html>
