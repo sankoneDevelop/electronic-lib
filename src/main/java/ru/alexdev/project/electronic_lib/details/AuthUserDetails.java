@@ -56,4 +56,9 @@ public class AuthUserDetails implements UserDetails {
     public AuthUser getAuthUser() {
         return this.authUser;
     }
+
+    public String getFullName() {
+        Reader reader = this.authUser.getReader();
+        return reader != null ? (reader.getName() + " " + reader.getSurname()) : null;
+    }
 }

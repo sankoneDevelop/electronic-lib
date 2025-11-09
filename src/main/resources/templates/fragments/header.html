@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+    <!-- Подключаем общий CSS файл -->
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<div th:fragment="header">
+    <header class="header">
+        <div class="logo">
+            <h2>Электронная библиотека</h2>
+        </div>
+
+        <nav class="nav">
+            <ul class="nav-links">
+                <li><a href="/main">Главная</a></li>
+                <li><a href="/books">Книги</a></li>
+                <li><a href="/authors">Авторы</a></li>
+            </ul>
+        </nav>
+
+        <div class="user-section" sec:authorize="isAuthenticated()">
+            <span class="user-name" sec:authentication="principal.fullName"></span>
+            <form th:action="@{/logout}" th:method="POST">
+                <input type="submit" value="Выйти" class="logout-btn">
+            </form>
+        </div>
+    </header>
+</div>
+
+</body>
+</html>
