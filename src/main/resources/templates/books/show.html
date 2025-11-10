@@ -3,17 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Book</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+
 </head>
 <body>
-<p th:text="'Название книги: ' + ${book.name}"></p>
-<p th:text="'Описание книги: ' + ${book.description}"></p>
-<p th:text="'Автор: ' + ${author.fullName}"></p>
+<div th:insert="~{fragments/header :: header}"> </div>
 
-<!--<a th:href="@{/books/{id}/edit(id=${book.id})}">Изменить книгу</a>
-<br>
-<form th:method="DELETE" th:action="@{/books/{id}(id=${book.id})}">
-    <input type="submit" value="Удалить книгу"/>
-</form>-->
+
+<p th:text="'Название книги: ' + ${book.getName()}"></p>
+<p th:text="'Описание книги: ' + ${book.getDescription()}"></p>
+<p th:text="'Автор: ' + ${author.getFullName()}"></p>
+
+<form th:action="@{/books/{id}/take(id = ${book.getId()})}" th:method="POST">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button type="submit">Взять книгу</button>
+</form>
+
+<div th:if="${param.success}">
+    Книга успешно взята
+</div>
+
+<div th:if="${param.error}">
+    Ошибка: <span th:text="${param.error}"></span>
+
+</div>
 
 </body>
 </html>

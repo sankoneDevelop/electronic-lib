@@ -25,7 +25,10 @@
         </nav>
 
         <div class="user-section" sec:authorize="isAuthenticated()">
-            <span class="user-name" sec:authentication="principal.fullName"></span>
+            <a th:href="@{/readers/{id}(id = ${#authentication.principal.reader.id})}">
+                <span class="user-name" sec:authentication="principal.fullName"></span>
+
+            </a>
             <form th:action="@{/logout}" th:method="POST">
                 <input type="submit" value="Выйти" class="logout-btn">
             </form>

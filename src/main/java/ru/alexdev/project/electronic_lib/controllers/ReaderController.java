@@ -5,17 +5,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.alexdev.project.electronic_lib.models.Reader;
+import ru.alexdev.project.electronic_lib.services.BookService;
 import ru.alexdev.project.electronic_lib.services.ReaderService;
 
 @Controller
 @RequestMapping("/readers")
 public class ReaderController {
 
-
+    private final BookService bookService;
     private final ReaderService readerService;
 
     @Autowired
-    public ReaderController(ReaderService readerService) {
+    public ReaderController(BookService bookService, ReaderService readerService) {
+        this.bookService = bookService;
         this.readerService = readerService;
     }
 
@@ -28,7 +30,7 @@ public class ReaderController {
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("reader", readerService.findOne(id));
-//        model.addAttribute("books", bookService.getBooksByReaderId(id));
+        model.addAttribute("books", bookService.getBooksByReaderId(id));
         return "readers/show";
     }
 

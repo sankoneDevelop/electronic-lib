@@ -6,7 +6,7 @@
     <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div th:insert="fragments/header :: header"> </div>
+<div th:insert="~{fragments/header :: header}"> </div>
 <div th:each="author : ${authors}">
     <a th:href="@{/authors/{id}(id=${author.id})}" th:text="${author.fullName}">VALUE</a>
 </div>

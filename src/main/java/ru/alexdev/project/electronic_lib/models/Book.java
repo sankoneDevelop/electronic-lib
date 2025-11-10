@@ -3,6 +3,7 @@ package ru.alexdev.project.electronic_lib.models;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "Book")
@@ -111,4 +112,10 @@ public class Book {
     public void setLogs(List<Logs> logs) {
         this.logs = logs;
     }
+
+    public Book getBook() {
+        return this;
+    }
+
+
 }

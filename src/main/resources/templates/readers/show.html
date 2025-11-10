@@ -3,27 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Reader</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
 </head>
 
 <body>
+<div th:insert="~{fragments/header :: header}"> </div>
+
 <p th:text = "${reader.getSurname() + ' ' + reader.getName()}">VALUE</p>
 <p th:text="'Номер телефона: ' + ${reader.getPhoneNumber()}">VALUE</p>
 <p th:text="'Почта: ' + ${reader.getEmail()}">VALUE</p>
 
 <hr>
-<!--<p th:if="${#lists.isEmpty(books)}">У читателя отсутствуют активные книги.</p>
 
-<ul th:if="${!#lists.isEmpty(books)}">
-    <li th:each="book : ${books}">
-        <span th:text="${book.name}"></span>
-    </li>
-</ul>
+<div th:each="book : ${books}">
+    <a th:href="@{/books/{id}(id = ${book.getId()})}" th:text="${book.getName()}"></a>
+</div>
 
-<a th:href="@{/readers/{id}/edit(id=${reader.getId()})}">Edit</a>
-
-<form th:method="DELETE" th:action="@{/readers/{id}(id=${reader.getId()})}">
-    <input type="submit" VALUE="Удалить человека">
-</form>-->
 
 </body>
 </html>

@@ -34,6 +34,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/books/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/authors/new", "/authors/*/edit", "/authors/*/delete").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/authors/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/authors/**").hasRole("ADMIN")
