@@ -33,8 +33,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/books/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/auth/**", "/css/**", "/images/**", "/main").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/books", "/books/", "/books/*").permitAll()
+                        .requestMatchers("/books/take/**", "/books/*/add-comment", "/books/*/return").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/authors/new", "/authors/*/edit", "/authors/*/delete").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/authors/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/authors/**").hasRole("ADMIN")
@@ -48,12 +49,11 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/process_login")
-                        .defaultSuccessUrl("/main", true)
                         .failureUrl("/auth/login?error"))
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/auth/login"))
+                        .logoutSuccessUrl("/main"))
                 .exceptionHandling( exception -> exception
                         .accessDeniedPage("/access-denied"));
 

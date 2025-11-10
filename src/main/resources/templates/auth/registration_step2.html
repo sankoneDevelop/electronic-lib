@@ -3,29 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Personal info</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+
 </head>
 <body>
-<form th:method="POST" th:action="@{/auth/registration-step2}" th:object="${reader}">
+<div class="auth-container">
+    <h2>Регистрация — шаг 2</h2>
+    <form th:method="POST" th:action="@{/auth/registration-step2}" th:object="${reader}">
+        <label for="name">Имя:</label>
+        <input type="text" th:field="*{name}" id="name">
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></div>
 
-    <label for="name">Введите имя: </label>
-    <input type="text" th:field="*{name}" id="name">
-    <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
-    <br/>
-    <label for="surname">Введите фамилию: </label>
-    <input type="text" th:field="*{surname}" id="surname">
-    <div style="color: red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname error</div>
-    <br/>
-    <label for="email">Введите почту: </label>
-    <input type="text" th:field="*{email}" id="email">
-    <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
-    <br/>
-    <label for="phoneNumber">Введите номер телефона: </label>
-    <input type="text" th:field="*{phoneNumber}" id="phoneNumber">
-    <div style="color: red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Phone Number error</div>
-    <br/>
-    <input type="hidden" name="authUserId" th:value="${authUserId}">
-    <input type="submit" value="Sign up!">
+        <label for="surname">Фамилия:</label>
+        <input type="text" th:field="*{surname}" id="surname">
+        <div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}" class="error"></div>
 
-</form>
+        <label for="email">Email:</label>
+        <input type="text" th:field="*{email}" id="email">
+        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></div>
+
+        <label for="phoneNumber">Телефон:</label>
+        <input type="text" th:field="*{phoneNumber}" id="phoneNumber">
+        <div th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="error"></div>
+
+        <input type="hidden" name="authUserId" th:value="${authUserId}">
+        <input type="submit" value="Зарегистрироваться">
+    </form>
+</div>
 </body>
 </html>

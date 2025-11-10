@@ -20,7 +20,7 @@ public class Comment {
     private Reader reader;
 
     @Column(name = "rating")
-    private int rating;
+    private Integer rating;
 
     @Column(name = "text")
     private String text;
@@ -42,11 +42,11 @@ public class Comment {
     }
 
 
-    public int getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 

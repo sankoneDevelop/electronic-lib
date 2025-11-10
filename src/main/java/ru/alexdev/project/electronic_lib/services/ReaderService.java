@@ -67,4 +67,26 @@ public class ReaderService {
 
     }
 
+    public void returnBook(int id, String username) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found!"));
+
+        Reader reader = readerRepository.findByAuthUserUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found!"));
+
+        if (!reader.getBooks().contains(book)) {
+            throw new RuntimeException("Book not taken");
+        }
+
+        reader.getBooks().remove(book);
+        book.getReaders().remove(reader);
+
+        readerRepository.save(reader);
+    }
+
+    public Reader findReaderByAuthUserUsername(String username) {
+        return readerRepository.findByAuthUserUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
 }

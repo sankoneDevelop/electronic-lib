@@ -5,34 +5,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Header</title>
-    <!-- Подключаем общий CSS файл -->
+
+    <!-- Общие стили -->
     <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div th:fragment="header">
     <header class="header">
+
+        <!-- Логотип -->
         <div class="logo">
-            <h2>Электронная библиотека</h2>
+            <a th:href="@{/main}" class="logo-link" title="Bookly — главная">
+                <img th:src="@{/images/logo.svg}" alt="Bookly logo" class="logo-icon"/>
+                <span class="logo-text">Bookly</span>
+            </a>
         </div>
 
+        <!-- Навигация -->
         <nav class="nav">
             <ul class="nav-links">
-                <li><a href="/main">Главная </a></li>
-                <li><a href="/books">Книги</a></li>
-                <li><a href="/authors">Авторы</a></li>
+                <li><a th:href="@{/books}">Книги</a></li>
             </ul>
         </nav>
 
-        <div class="user-section" sec:authorize="isAuthenticated()">
-            <a th:href="@{/readers/{id}(id = ${#authentication.principal.reader.id})}">
-                <span class="user-name" sec:authentication="principal.fullName"></span>
-
+        <!-- Если пользователь вошёл -->
+        <div class="nav-links" sec:authorize="isAuthenticated()">
+            <a th:href="@{/readers/{id}(id=${#authentication.principal.reader.id})}" class="user-link">
+                <span sec:authentication="principal.fullName"></span>
             </a>
-            <form th:action="@{/logout}" th:method="POST">
-                <input type="submit" value="Выйти" class="logout-btn">
+            <form th:action="@{/logout}" th:method="POST" class="nav-links">
+                <button type="submit" class="logout-btn">Выйти</button>
             </form>
         </div>
+
+        <!-- Если пользователь не вошёл -->
+        <div class="nav-links" sec:authorize="!isAuthenticated()">
+            <a th:href="@{/auth/login}" class="login-btn">Войти</a>
+        </div>
+
     </header>
 </div>
 

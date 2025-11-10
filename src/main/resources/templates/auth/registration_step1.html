@@ -3,20 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+
 </head>
 <body>
-<form th:method="POST" th:action="@{/auth/registration-step1}" th:object="${authUser}">
+<div class="auth-container">
+    <h2>Регистрация — шаг 1</h2>
+    <form th:method="POST" th:action="@{/auth/registration-step1}" th:object="${authUser}">
+        <label for="username">Имя пользователя:</label>
+        <input type="text" th:field="*{username}" id="username">
+        <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error">Ошибка username</div>
 
-    <label for="username">Введите имя пользователя: </label>
-    <input type="text" th:field="*{username}" id="username">
-    <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</div>
-    <br/>
-    <label for="password">Введите пароль: </label>
-    <input type="password" th:field="*{password}" id="password">
-    <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
-    <br/>
-    <input type="submit" value="Next step!">
+        <label for="password">Пароль:</label>
+        <input type="password" th:field="*{password}" id="password">
+        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error">Ошибка password</div>
 
-</form>
+        <input type="submit" value="Следующий шаг">
+    </form>
+
+    <div class="info">
+        Уже есть аккаунт? <a th:href="@{/auth/login}">Войдите</a>
+    </div>
+</div>
 </body>
 </html>

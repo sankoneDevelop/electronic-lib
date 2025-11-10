@@ -1,4 +1,6 @@
-/* Общие стили для всего сайта */
+/* =========================
+   Общие стили
+   ========================= */
 * {
     margin: 0;
     padding: 0;
@@ -6,96 +8,243 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #f8f9fa;
+    color: #2c3e50;
+    background-color: #f2f6fa;
 }
 
-/* Стили для шапки */
+/* =========================
+   Шапка сайта
+   ========================= */
 .header {
-    background-color: #ffb74d;
-    padding: 15px 30px;
+    width: 100%;
+    padding: 15px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background: linear-gradient(90deg, #64b5f6, #bbdefb);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    font-family: 'Roboto', Arial, sans-serif;
 }
 
-.logo h2 {
-    margin: 0;
-    color: #333;
-    font-size: 24px;
+/* Центрируем меню по экрану */
+.nav {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .nav-links {
     display: flex;
-    gap: 25px;
+    gap: 35px;
+    list-style: none;
     margin: 0;
     padding: 0;
-    list-style: none;
 }
 
 .nav-links a {
     text-decoration: none;
-    color: #333;
+    color: #1e3a5f;
     font-weight: 500;
     padding: 8px 16px;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+    border-radius: 6px;
+    transition: all 0.3s ease;
 }
 
 .nav-links a:hover {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255,255,255,0.4);
+    color: #0d1b2a;
 }
 
+/* Логотип */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 2;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    display: block;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+}
+
+.logo-text {
+    font-family: 'Roboto', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #0d47a1;
+    letter-spacing: 0.4px;
+}
+
+.logo-link:hover .logo-text {
+    color: #08306b;
+    transform: translateY(-1px);
+}
+
+/* Пользовательский блок */
 .user-section {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
+    z-index: 2;
 }
 
-.user-name {
-    font-weight: bold;
-    color: #333;
+.user-section a {
+    color: #0d47a1;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.user-section a:hover {
+    color: #08306b;
+    text-decoration: underline;
 }
 
 .logout-btn {
-    background-color: #ff9800;
+    background-color: #64b5f6;
     color: white;
     border: none;
     padding: 8px 16px;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     font-weight: 500;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
 }
 
 .logout-btn:hover {
-    background-color: #f57c00;
+    background-color: #42a5f5;
 }
 
-/* Стили для основного контента */
+/* =========================
+   Основной контент
+   ========================= */
 .main-content {
     padding: 30px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-/* Адаптивность */
+/* =========================
+   Формы авторизации и регистрации
+   ========================= */
+.auth-container {
+    max-width: 400px;
+    margin: 80px auto;
+    background-color: #ffffff;
+    padding: 35px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.auth-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #1976d2;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.auth-container label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.auth-container input[type="text"],
+.auth-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 18px;
+    border-radius: 6px;
+    border: 1px solid #b0bec5;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.auth-container input[type="text"]:focus,
+.auth-container input[type="password"]:focus {
+    border-color: #64b5f6;
+    box-shadow: 0 0 5px rgba(100,181,246,0.5);
+    outline: none;
+}
+
+.auth-container input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #64b5f6;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+}
+
+.auth-container input[type="submit"]:hover {
+    background-color: #42a5f5;
+}
+
+.auth-container .info {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 14px;
+}
+
+.auth-container .info a {
+    color: #1976d2;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.auth-container .info a:hover {
+    color: #0d47a1;
+    text-decoration: underline;
+}
+
+.auth-container .error {
+    color: #e53935;
+    margin-bottom: 12px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* =========================
+   Адаптивность (минимальная)
+   ========================= */
 @media (max-width: 768px) {
     .header {
         flex-direction: column;
-        gap: 15px;
-        padding: 15px 20px;
+        padding: 20px;
+    }
+
+    .nav {
+        position: static;
+        transform: none;
+        margin-top: 10px;
     }
 
     .nav-links {
-        gap: 15px;
+        justify-content: center;
+        gap: 20px;
     }
 
     .user-section {
-        flex-direction: column;
-        gap: 10px;
+        margin-top: 10px;
     }
 }
