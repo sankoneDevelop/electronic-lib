@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import ru.alexdev.project.electronic_lib.services.AuthUserDetailsService;
-import ru.alexdev.project.electronic_lib.services.AuthUserService;
 
 @EnableWebSecurity
 @Configuration
@@ -28,39 +27,56 @@ public class SecurityConfig {
         this.authUserDetailsService = authUserDetailsService;
     }
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/css/**", "/images/**", "/main").permitAll()
+                        // Публичные endpoints (доступны всем)
+                        .requestMatchers(
+                                "/auth/login",
+                                "/auth/registration",
+                                "/auth/registration-step1",
+                                "/auth/registration-step2",
+                                "/css/**",
+                                "/images/**",
+                                "/main/**"
+                        ).permitAll()
+
+                        // Публичные GET запросы книг (доступны всем)
                         .requestMatchers(HttpMethod.GET, "/books", "/books/", "/books/*").permitAll()
-                        .requestMatchers("/books/take/**", "/books/*/add-comment", "/books/*/return").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/authors/new", "/authors/*/edit", "/authors/*/delete").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH, "/authors/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/authors/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/authors/**").hasRole("ADMIN")
 
-                        .requestMatchers("/authors/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/librarians").permitAll()
+                        .requestMatchers("/librarians/**").authenticated()
 
+                        .requestMatchers("/readers").permitAll()
+                        .requestMatchers("/readers/new").authenticated()
+
+                        // Действия с книгами (только для авторизованных пользователей)
+//                        .requestMatchers("/books/take/**", "/books/*/add-comment", "/books/*/return").hasAnyRole("USER", "ADMIN")
+
+                        // Управление авторами (только для админов)
+                        .requestMatchers("/authors", "/authors/**").permitAll()
+
+                        // Админка (только для админов)
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().hasAnyRole("USER", "ADMIN"))
+
+                        // Все остальные запросы требуют аутентификации
+                        .anyRequest().authenticated())
 
                 .formLogin(form -> form
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/process_login")
+                        .defaultSuccessUrl("/main", true)
                         .failureUrl("/auth/login?error"))
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/main"))
-                .exceptionHandling( exception -> exception
+                .exceptionHandling(exception -> exception
                         .accessDeniedPage("/access-denied"));
-
 
         return http.build();
     }
-
 
     // Связка кастомной логики аутентификации
     @Bean
@@ -85,5 +101,4 @@ public class SecurityConfig {
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

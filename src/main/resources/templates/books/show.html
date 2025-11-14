@@ -5,81 +5,90 @@
     <title>Book</title>
     <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-
 </head>
 <body>
 <div th:insert="~{fragments/header :: header}"> </div>
 
+<div class="book-container">
+    <div class="book-info">
+        <p th:text="'Название книги: ' + ${book.getName()}"></p>
+        <p th:text="'Описание книги: ' + ${book.getDescription()}"></p>
+        <p th:text="'Автор: ' + ${author.getFullName()}"></p>
+    </div>
 
-<p th:text="'Название книги: ' + ${book.getName()}"></p>
-<p th:text="'Описание книги: ' + ${book.getDescription()}"></p>
-<p th:text="'Автор: ' + ${author.getFullName()}"></p>
-
-<hr>
-
-<!-- Взять книгу -->
-<div th:if="${isAuthenticated}">
-    <form th:if="${!hasBook}" th:action="@{/books/{id}/take(id=${book.id})}" method="post">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-        <button type="submit">Взять книгу</button>
-    </form>
-
-    <form th:if="${hasBook}" th:action="@{/books/{id}/return(id=${book.id})}" method="post">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-        <button type="submit">Вернуть книгу</button>
-    </form>
-</div>
-
-<!-- Для гостей -->
-<div th:if="${!isAuthenticated}">
-    <a href="/auth/login">Войдите, чтобы взять книгу</a>
-</div>
-
-
-<div th:if="${param.error}">
-    Ошибка: <span th:text="${param.error}"></span>
-
-</div>
-<hr>
-<h2>
-    Рецензии на книгу:
-</h2>
-<hr/>
-<div th:each="comment : ${comments}">
-    <p>Пользователь: <span th:text="${comment.getReader().getAuthUser().getUsername()}"></span></p>
-    <p>Оценка: <span th:text="${comment.getRating()}"></span></p>
-    <p>Текст рецензии: <span th:text="${comment.getText()}"></span></p>
     <hr>
-</div>
 
-<!-- Кнопка показать форму -->
-<a th:href="@{/auth/login}">Войдите, чтобы оставить отзыв на книгу</a>
-<a th:if="${isAuthenticated}" th:href="@{/books/{id}(id=${book.id}, commentForm=true)}">Оставить отзыв</a>
+    <!-- Взять книгу -->
+    <div class="book-actions">
+        <div th:if="${isAuthenticated}">
+            <form th:if="${!hasBook}" th:action="@{/books/{id}/take(id=${book.id})}" th:method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit">Взять книгу</button>
+            </form>
 
-<!-- Форма для комментария -->
-<div th:if="${param.commentForm}">
-    <form th:method="POST" th:action="@{/books/{id}/add-comment(id=${book.id})}" th:object="${comment}">
-        <label for="value-rating">Оценка:</label>
-        <select required th:field="*{rating}" id="value-rating">
-            <option value="" disabled selected>--Выберите оценку книге--</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
+            <form th:if="${hasBook}" th:action="@{/books/{id}/return(id=${book.id})}" th:method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit">Вернуть книгу</button>
+            </form>
+        </div>
 
-        <br/>
+        <!-- Для гостей -->
+        <div th:if="${!isAuthenticated}">
+            <a href="/auth/login">Войдите, чтобы взять книгу</a>
+        </div>
 
-        <label for="text-rating">Отзыв:</label>
-        <br/>
-        <textarea th:field="*{text}" id="text-rating" cols="40" rows="5"></textarea>
+        <div th:if="${param.error}">
+            <div class="error-message">
+                Ошибка: <span th:text="${param.error}"></span>
+            </div>
+        </div>
+    </div>
 
-        <br/>
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-        <button type="submit">Отправить</button>
-    </form>
+    <h2 class="reviews-title">
+        Рецензии на книгу:
+    </h2>
+
+    <div class="reviews-container">
+        <div th:each="comment : ${comments}" class="review-item">
+            <div class="review-header">
+                <span class="review-user" th:text="'Пользователь: ' + ${comment.getReader().getAuthUser().getUsername()}"></span>
+                <span class="review-rating" th:text="'Оценка: ' + ${comment.getRating()}"></span>
+            </div>
+            <p class="review-text" th:text="${comment.getText()}"></p>
+        </div>
+    </div>
+
+    <!-- Кнопка показать форму -->
+    <div class="book-actions">
+        <a th:if="${!isAuthenticated}" th:href="@{/auth/login}" class="show-form-btn">Войдите, чтобы оставить отзыв на книгу</a>
+        <a th:if="${isAuthenticated}" th:href="@{/books/{id}(id=${book.id}, commentForm=true)}" class="show-form-btn">Оставить отзыв</a>
+    </div>
+
+    <!-- Форма для комментария -->
+    <div th:if="${param.commentForm}" class="review-form-container">
+        <h3>Оставить отзыв о книге</h3>
+        <form th:method="POST" th:action="@{/books/{id}/add-comment(id=${book.id})}" th:object="${comment}" class="review-form">
+            <label for="value-rating">Оценка:</label>
+            <select required th:field="*{rating}" id="value-rating">
+                <option value="" disabled selected>--Выберите оценку книге--</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+
+            <br/>
+
+            <label for="text-rating">Отзыв:</label>
+            <br/>
+            <textarea th:field="*{text}" id="text-rating" cols="40" rows="5" placeholder="Напишите ваш отзыв о книге..."></textarea>
+
+            <br/>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit">Отправить отзыв</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

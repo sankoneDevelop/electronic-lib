@@ -45,4 +45,12 @@ public class BookService {
         return bookRepository.findBooksByReaderId(id);
     }
 
+    public int getCountTakenBooks() {
+        return bookRepository.findCountTakenBooks();
+    }
+
+    public int getCountAllBooks() {
+        return bookRepository.findCountAllBooks();
+    }
+
 }

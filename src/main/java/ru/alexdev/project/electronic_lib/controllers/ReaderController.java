@@ -1,8 +1,11 @@
 package ru.alexdev.project.electronic_lib.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.alexdev.project.electronic_lib.models.Reader;
 import ru.alexdev.project.electronic_lib.services.BookService;
@@ -22,8 +25,12 @@ public class ReaderController {
     }
 
     @GetMapping()
-    public String index(Model model) {
+    public String index(Model model, Authentication authentication) {
         model.addAttribute("readers", readerService.findAll());
+
+        boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
+        model.addAttribute("isAuthenticated", isAuthenticated);
+
         return "readers/index";
     }
 
@@ -35,7 +42,12 @@ public class ReaderController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("reader") Reader reader) {
+    public String create(@ModelAttribute("reader") @Valid Reader reader,
+                         BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "/readers/new";
+        }
         readerService.save(reader);
         return "redirect:/readers";
     }

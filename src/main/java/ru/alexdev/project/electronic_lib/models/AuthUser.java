@@ -18,15 +18,13 @@ public class AuthUser {
     @Column(name = "username")
     private String username;
 
+    @NotEmpty(message = "Пароль не должен быть пустым")
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    private String role;
-
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "reader_id", referencedColumnName = "id")
-    private Reader reader;
+    @JoinColumn(name = "librarian_id", referencedColumnName = "id")
+    private Librarian librarian;
 
     public AuthUser() {
     }
@@ -59,20 +57,12 @@ public class AuthUser {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public Librarian getLibrarian() {
+        return librarian;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public Reader getReader() {
-        return reader;
-    }
-
-    public void setReader(Reader reader) {
-        this.reader = reader;
+    public void setLibrarian(Librarian librarian) {
+        this.librarian = librarian;
     }
 
     @Override
@@ -81,8 +71,7 @@ public class AuthUser {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", reader=" + reader +
+                ", librarian=" + librarian +
                 '}';
     }
 }

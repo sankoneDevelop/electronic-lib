@@ -6,16 +6,13 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-import java.util.List;
-
 @Entity
-@Table(name = "Reader")
-public class Reader {
+@Table(name = "Librarian")
+public class Librarian {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @NotEmpty(message = "Фамилия не может быть пуста")
     @Size(min = 2, max = 100, message = "Длина фамилии должна быть в диапазоне от 2 до 100 символов")
@@ -29,44 +26,35 @@ public class Reader {
     @Column(name = "name")
     private String name;
 
-    @Email
-    @NotEmpty(message = "Почта не может быть пустой")
-    @Column(name = "email")
-    private String email;
-
     @NotEmpty(message = "Номер телефона не может быть пустой")
     @Size(min = 11, max = 11, message = "Номер телефона должен состоять из 11 цифр")
     @Pattern(regexp = "^[0-9]+$", message = "Номер телефона должен содержать только цифры")
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @ManyToMany(mappedBy = "readers")
-    private List<Book> books;
+    @Email
+    @NotEmpty(message = "Почта не может быть пустой")
+    @Column(name = "email")
+    private String email;
 
-    @OneToMany(mappedBy = "reader")
-    private List<ReadingSession> readingSessions;
+    @OneToOne(mappedBy = "librarian")
+    private AuthUser authUser;
 
-    @OneToMany(mappedBy = "reader")
-    private List<Comment> comments;
-
-    @OneToMany(mappedBy = "reader")
-    private List<Logs> logs;
-
-    public Reader() {
+    public Librarian() {
     }
 
-    public Reader(String surname, String name, String email, String phoneNumber) {
+    public Librarian(String surname, String name, String phoneNumber, String email) {
         this.surname = surname;
         this.name = name;
-        this.email = email;
         this.phoneNumber = phoneNumber;
+        this.email = email;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -86,14 +74,6 @@ public class Reader {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -102,28 +82,31 @@ public class Reader {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public String getEmail() {
+        return email;
     }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public List<ReadingSession> getReadingSessions() {
-        return readingSessions;
+    public AuthUser getAuthUser() {
+        return authUser;
     }
 
-    public void setReadingSessions(List<ReadingSession> readingSessions) {
-        this.readingSessions = readingSessions;
+    public void setAuthUser(AuthUser authUser) {
+        this.authUser = authUser;
     }
 
-    public List<Logs> getLogs() {
-        return logs;
+    @Override
+    public String toString() {
+        return "Librarian{" +
+                "id=" + id +
+                ", surname='" + surname + '\'' +
+                ", name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", authUser=" + authUser +
+                '}';
     }
-
-    public void setLogs(List<Logs> logs) {
-        this.logs = logs;
-    }
-
 }

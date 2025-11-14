@@ -1,14 +1,11 @@
 package ru.alexdev.project.electronic_lib.details;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.alexdev.project.electronic_lib.models.AuthUser;
-import ru.alexdev.project.electronic_lib.models.Reader;
+import ru.alexdev.project.electronic_lib.models.Librarian;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class AuthUserDetails implements UserDetails {
 
@@ -20,7 +17,7 @@ public class AuthUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(authUser.getRole()));
+        return null;
     }
 
     @Override
@@ -58,11 +55,11 @@ public class AuthUserDetails implements UserDetails {
     }
 
     public String getFullName() {
-        Reader reader = this.authUser.getReader();
-        return reader != null ? (reader.getName() + " " + reader.getSurname()) : null;
+        Librarian librarian = this.authUser.getLibrarian();
+        return librarian != null ? (librarian.getName() + " " + librarian.getSurname()) : null;
     }
 
-    public Reader getReader() {
-        return authUser.getReader();
+    public Librarian getLibrarian() {
+        return authUser.getLibrarian();
     }
 }

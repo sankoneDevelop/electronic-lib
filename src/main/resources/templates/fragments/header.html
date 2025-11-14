@@ -27,12 +27,15 @@
         <nav class="nav">
             <ul class="nav-links">
                 <li><a th:href="@{/books}">Книги</a></li>
+                <li><a th:href="@{/authors}">Авторы</a></li>
+                <li><a th:href="@{/readers}">Читатели</a></li>
+
             </ul>
         </nav>
 
         <!-- Если пользователь вошёл -->
         <div class="nav-links" sec:authorize="isAuthenticated()">
-            <a th:href="@{/readers/{id}(id=${#authentication.principal.reader.id})}" class="user-link">
+            <a th:href="@{/librarians/{id}(id=${#authentication.principal.librarian.id})}" class="user-link">
                 <span sec:authentication="principal.fullName"></span>
             </a>
             <form th:action="@{/logout}" th:method="POST" class="nav-links">

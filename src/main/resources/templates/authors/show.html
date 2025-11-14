@@ -2,16 +2,30 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Author</title>
+    <title th:text="${author.fullName + ' - Bookly'}">Author - Bookly</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+<div th:insert="~{fragments/header :: header}"></div>
 
-<p th:text="${author.fullName}">VALUE</p>
-<hr/>
-<!--<a th:href="@{/authors/{id}/edit(id=${author.id})}">Edit</a>
+<div class="main-container">
+    <div class="book-container">
+        <div class="book-info">
+            <h1 class="book-title" th:text="${author.fullName}">Имя автора</h1>
+            <p class="author-description">Информация об авторе и его произведениях</p>
+        </div>
 
-<form th:method="DELETE" th:action="@{/authors/{id}(id=${author.id})}">
-    <input type="submit" VALUE="Удалить автора">
-</form>-->
+        <div class="book-actions">
+            <a th:href="@{/authors}" class="back-link">← Вернуться к списку авторов</a>
+        </div>
+
+        <div class="author-books">
+            <h3 class="books-title">Книги автора</h3>
+            <p class="no-books-message">Список книг будет отображаться здесь</p>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

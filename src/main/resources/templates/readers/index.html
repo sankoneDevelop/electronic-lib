@@ -3,15 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Readers</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
 </head>
 <body>
+<div th:insert="~{fragments/header :: header}"></div>
+
+
 <div th:each="reader : ${readers}">
     <a th:href="@{/readers/{id}(id = ${reader.getId()})}" th:text="${reader.getSurname() + ' ' + reader.getName()}">VALUE</a>
 </div>
 
 <hr/>
 
-<!--<a href="/readers/new">Добавить нового человека</a>-->
+<div>
+    <a th:if="${isAuthenticated}" th:href="@{/readers/new}">Добавить нового читателя</a>
+    <a th:if="${!isAuthenticated}" th:href="@{/auth/logn}">Войдите, чтобы добавить нового читателя</a>
+</div>
 </body>
 </html>

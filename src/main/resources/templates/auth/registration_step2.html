@@ -5,27 +5,28 @@
     <title>Personal info</title>
     <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-
 </head>
 <body>
 <div class="auth-container">
     <h2>Регистрация — шаг 2</h2>
-    <form th:method="POST" th:action="@{/auth/registration-step2}" th:object="${reader}">
+
+    <form th:method="POST" th:action="@{/auth/registration-step2}" th:object="${librarian}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
         <label for="name">Имя:</label>
-        <input type="text" th:field="*{name}" id="name">
+        <input type="text" th:field="*{name}" id="name" placeholder="Только буквы">
         <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></div>
 
         <label for="surname">Фамилия:</label>
-        <input type="text" th:field="*{surname}" id="surname">
+        <input type="text" th:field="*{surname}" id="surname" placeholder="Только буквы">
         <div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}" class="error"></div>
 
         <label for="email">Email:</label>
-        <input type="text" th:field="*{email}" id="email">
+        <input type="text" th:field="*{email}" id="email" placeholder="example@mail.com">
         <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></div>
 
         <label for="phoneNumber">Телефон:</label>
-        <input type="text" th:field="*{phoneNumber}" id="phoneNumber">
+        <input type="text" th:field="*{phoneNumber}" id="phoneNumber" placeholder="Только цифры, 11 символов">
         <div th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="error"></div>
 
         <input type="hidden" name="authUserId" th:value="${authUserId}">

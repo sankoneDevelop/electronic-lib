@@ -14,8 +14,8 @@ public interface ReaderRepository extends JpaRepository<Reader, Integer> {
     @Query("SELECT r FROM Reader r LEFT JOIN FETCH r.books WHERE r.id = :id")
     Optional<Reader> findByIdWithBooks(@Param("id") int id);
 
-    @Query("SELECT r FROM Reader r JOIN r.authUser au WHERE au.username = :username")
-    Optional<Reader> findByAuthUserUsername(@Param("username") String username);
+    Optional<Reader> findByPhoneNumber(String phoneNumber);
 
+    Optional<Reader> findByEmail(String email);
 
 }

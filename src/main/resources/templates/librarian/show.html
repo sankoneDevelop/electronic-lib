@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <title>Reader</title>
     <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
 </head>
+
 <body>
 <div th:insert="~{fragments/header :: header}"> </div>
 
-<div>
-    <p>Общее количество книг на сайте: <span th:text="${countAllBooks}"></span></p>
+<p th:text = "${librarian.getSurname() + ' ' + librarian.getName()}">VALUE</p>
+<p th:text="'Номер телефона: ' + ${librarian.getPhoneNumber()}">VALUE</p>
+<p th:text="'Почта: ' + ${librarian.getEmail()}">VALUE</p>
 
-    <p>Количество взятых книг: <span th:text="${countTakenBooks}"></span></p>
-</div>
+<hr>
+
 </body>
 </html>

@@ -2,22 +2,46 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <title>Электронная библиотека</title>
     <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
 </head>
 
 <body>
 <div th:insert="~{fragments/header :: header}"> </div>
-<div th:each="book : ${books}">
-    <a th:href="@{/books/{id}(id=${book.id})}" th:text="${book.name}">VALUE</a>
+
+<div class="main-container">
+    <h1 class="page-title">Каталог книг</h1>
+
+    <!-- Сетка книг -->
+    <div class="books-grid">
+        <div th:each="book : ${books}" class="book-card">
+            <a th:href="@{/books/{id}(id=${book.id})}" class="book-link">
+                <h3 class="book-title" th:text="${book.name}">Название книги</h3>
+                <div class="book-info">
+                    <!-- Автор из поля author -->
+                    <div class="book-author" th:if="${book.author != null}"
+                         th:text="'Автор: ' + ${book.author.fullName}">Автор</div>
+                    <div class="book-description" th:text="${book.description}">Описание книги</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <hr class="content-divider"/>
+
+    <div class="add-book-section">
+        <div th:if="${isAuthenticated}">
+            <a th:href="@{/books/new}" class="add-book-btn">Добавить новую книгу</a>
+        </div>
+        <div th:if="${!isAuthenticated}">
+            <p class="login-prompt">Войдите, чтобы добавить новую книгу</p>
+            <a th:href="@{/auth/login}" class="add-book-btn">Войти в систему</a>
+        </div>
+    </div>
+
+
 </div>
-
-<hr/>
-
-<!--<a th:href="@{/books/new}">Добавить книгу</a>-->
-
 
 </body>
 </html>

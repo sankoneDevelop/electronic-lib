@@ -2,17 +2,33 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title> author</title>
+    <title>Добавить автора - Bookly</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+<div th:insert="~{fragments/header :: header}"></div>
 
-<form th:method="POST" th:action="@{/authors}" th:object="${author}">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    <label for="fullname">Введите полное имя автора: </label>
-    <input type="text"  th:field="*{fullName}" id="fullname">
+<div class="form-container">
+    <h2 class="form-title">Добавить нового автора</h2>
 
-    <input type="submit" value="Создать!">
-</form>
+    <form th:method="POST" th:action="@{/authors}" th:object="${author}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+        <div class="form-group">
+            <label for="fullname">Полное имя автора:</label>
+            <input type="text" th:field="*{fullName}" id="fullname"
+                   th:classappend="${#fields.hasErrors('fullName')} ? 'error-field' : ''"
+                   placeholder="Введите полное имя автора">
+            <div th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" class="error"></div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">Создать автора</button>
+            <a th:href="@{/authors}" class="btn-cancel">Отмена</a>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>

@@ -48,18 +48,4 @@ public class CommentService {
         commentRepository.deleteById(id);
     }
 
-    public void addComment(int bookId, Comment comment, String username) {
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new RuntimeException("Book not found"));
-        Reader reader = readerRepository.findByAuthUserUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        Comment newComment = new Comment();
-        newComment.setText(comment.getText());// копируем текст из формы
-        newComment.setRating(comment.getRating());
-        newComment.setBook(book);
-        newComment.setReader(reader);
-
-        commentRepository.save(newComment);
-    }
 }

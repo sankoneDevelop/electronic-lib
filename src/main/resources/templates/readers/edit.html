@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+<div th:insert="~{fragments/header :: header}"> </div>
 
 <form th:method="PATCH" th:action="@{/readers/{id}(id=${reader.getId()})}" th:object="${reader}">
     <label for="surname">Введите фамилию: </label>

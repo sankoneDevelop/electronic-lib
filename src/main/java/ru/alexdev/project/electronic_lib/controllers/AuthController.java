@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.alexdev.project.electronic_lib.models.AuthUser;
+import ru.alexdev.project.electronic_lib.models.Librarian;
 import ru.alexdev.project.electronic_lib.models.Reader;
 import ru.alexdev.project.electronic_lib.services.AuthUserService;
 import ru.alexdev.project.electronic_lib.services.RegistrationService;
@@ -47,7 +48,7 @@ public class AuthController {
 
         AuthUser authUser1 =  registrationService.saveTemporary(authUser);
 
-        model.addAttribute("reader", new Reader());
+        model.addAttribute("librarian", new Librarian());
         model.addAttribute("authUserId", authUser1.getId());
 
 
@@ -56,13 +57,26 @@ public class AuthController {
     }
 
     @PostMapping("/registration-step2")
-    public String performRegistration(@ModelAttribute("reader") Reader reader,
-                                      @RequestParam("authUserId") int authUserId) {
+    public String performRegistration(@ModelAttribute("reader") @Valid Librarian librarian,
+                                      BindingResult bindingResult,
+                                      @RequestParam("authUserId") int authUserId,
+                                      Model model) {
 
-        registrationService.completeRegistration(authUserId, reader);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("authUserId", authUserId);
+            return "auth/registration_step2";
+        }
 
-        return "redirect:/auth/login";
+        try {
+            registrationService.completeRegistration(authUserId, librarian);
+            return "redirect:/auth/login?success";
+        } catch (RuntimeException e) {
 
+            bindingResult.rejectValue("phoneNumber", "error.phoneNumber", e.getMessage());
+            model.addAttribute("authUserId", authUserId);
+            return "auth/registration_step2";
+
+        }
     }
 }
 
