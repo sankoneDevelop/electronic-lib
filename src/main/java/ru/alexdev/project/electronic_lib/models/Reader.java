@@ -47,9 +47,6 @@ public class Reader {
     private List<ReadingSession> readingSessions;
 
     @OneToMany(mappedBy = "reader")
-    private List<Comment> comments;
-
-    @OneToMany(mappedBy = "reader")
     private List<Logs> logs;
 
     public Reader() {

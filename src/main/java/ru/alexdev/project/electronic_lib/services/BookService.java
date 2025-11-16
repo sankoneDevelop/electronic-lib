@@ -53,4 +53,14 @@ public class BookService {
         return bookRepository.findCountAllBooks();
     }
 
+    public List<Book> searchBooks(String search) {
+        if (search == null && search.trim().isEmpty()) {
+            return findAll();
+        }
+
+        String trimmedTerm = search.trim().toLowerCase();
+
+        return bookRepository.findBySearchTerm(trimmedTerm);
+    }
+
 }

@@ -1,5 +1,6 @@
 package ru.alexdev.project.electronic_lib.controllers;
 
+import jakarta.servlet.ServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -22,12 +23,18 @@ public class AuthorsController {
 
 
     @GetMapping()
-    public String index(Model model, Authentication authentication) {
+    public String index(@RequestParam(value = "search", required = false) String search, Model model, Authentication authentication, ServletRequest servletRequest) {
+
+        if (search != null && !(search.trim().isEmpty())) {
+            model.addAttribute("authors", authorService.searchAuthors(search.trim()));
+        } else {
+            model.addAttribute("authors", authorService.findAll());
+
+        }
 
         boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
         model.addAttribute("isAuthenticated", isAuthenticated);
 
-        model.addAttribute("authors", authorService.findAll());
         return "authors/index";
     }
 

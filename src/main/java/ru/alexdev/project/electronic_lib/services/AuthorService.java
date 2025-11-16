@@ -40,4 +40,14 @@ public class AuthorService {
     public void delete(int id) {
         authorRepository.deleteById(id);
     }
+
+    public List<Author> searchAuthors(String searchTerm) {
+        if (searchTerm == null || searchTerm.trim().isEmpty()) {
+            return findAll();
+        }
+
+        String trimmedTerm = searchTerm.trim().toLowerCase();
+
+        return authorRepository.findBySearchTerm(trimmedTerm);
+    }
 }

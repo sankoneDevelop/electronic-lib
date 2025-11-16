@@ -25,8 +25,15 @@ public class ReaderController {
     }
 
     @GetMapping()
-    public String index(Model model, Authentication authentication) {
-        model.addAttribute("readers", readerService.findAll());
+    public String index(@RequestParam(value = "search", required = false) String search,
+                        Model model,
+                        Authentication authentication) {
+
+        if (search != null && !search.trim().isEmpty()) {
+            model.addAttribute("readers", readerService.searchReaders(search.trim()));
+        } else {
+            model.addAttribute("readers", readerService.findAll());
+        }
 
         boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
         model.addAttribute("isAuthenticated", isAuthenticated);
@@ -37,19 +44,34 @@ public class ReaderController {
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("reader", readerService.findOne(id));
+
         model.addAttribute("books", bookService.getBooksByReaderId(id));
         return "readers/show";
     }
 
     @PostMapping()
     public String create(@ModelAttribute("reader") @Valid Reader reader,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult,
+                         Model model) {
 
         if (bindingResult.hasErrors()) {
-            return "/readers/new";
+            return "readers/new";
         }
-        readerService.save(reader);
-        return "redirect:/readers";
+
+        try {
+            readerService.save(reader);
+            return "redirect:/readers";
+        } catch (IllegalArgumentException e) {
+            // Добавляем ошибку уникальности в BindingResult
+            if (e.getMessage().contains("email")) {
+                bindingResult.rejectValue("email", "error.reader", e.getMessage());
+            } else if (e.getMessage().contains("номером телефона")) {
+                bindingResult.rejectValue("phoneNumber", "error.reader", e.getMessage());
+            } else {
+                bindingResult.reject("error.reader", e.getMessage());
+            }
+            return "readers/new";
+        }
     }
 
     @GetMapping("/new")
@@ -58,14 +80,43 @@ public class ReaderController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("reader") Reader reader, @PathVariable("id") int id) {
-        readerService.update(id, reader);
-        return "redirect:/readers";
+    public String update(@ModelAttribute("reader") @Valid Reader reader,
+                         BindingResult bindingResult,
+                         @PathVariable("id") int id,
+                         Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "readers/edit";
+        }
+
+        try {
+            readerService.update(id, reader);
+            return "redirect:/readers";
+        } catch (IllegalArgumentException e) {
+            // Добавляем ошибку уникальности в BindingResult
+            if (e.getMessage().contains("email")) {
+                bindingResult.rejectValue("email", "error.reader", e.getMessage());
+            } else if (e.getMessage().contains("номером телефона")) {
+                bindingResult.rejectValue("phoneNumber", "error.reader", e.getMessage());
+            } else if (e.getMessage().contains("не найден")) {
+                bindingResult.reject("error.reader", e.getMessage());
+            } else {
+                bindingResult.reject("error.reader", e.getMessage());
+            }
+
+            // Добавляем reader обратно в модель для отображения формы
+            model.addAttribute("reader", reader);
+            return "readers/edit";
+        }
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        model.addAttribute("reader", readerService.findOne(id));
+        Reader reader = readerService.findOne(id);
+        if (reader == null) {
+            return "redirect:/readers";
+        }
+        model.addAttribute("reader", reader);
         return "readers/edit";
     }
 
@@ -74,6 +125,4 @@ public class ReaderController {
         readerService.delete(id);
         return "redirect:/readers";
     }
-
-
 }

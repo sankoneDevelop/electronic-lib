@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.alexdev.project.electronic_lib.models.Reader;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,4 +19,13 @@ public interface ReaderRepository extends JpaRepository<Reader, Integer> {
 
     Optional<Reader> findByEmail(String email);
 
+    @Query("SELECT r FROM Reader r WHERE " +
+            "LOWER(r.name) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            "LOWER(r.surname) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            "LOWER(CONCAT(r.name, ' ', r.surname)) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            "LOWER(CONCAT(r.surname, ' ', r.name)) LIKE LOWER(CONCAT('%', :search, '%'))")
+    List<Reader> findBySearchTerm(@Param("search") String search);
+
+
 }
+

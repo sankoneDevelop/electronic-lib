@@ -45,9 +45,13 @@ public class BooksController {
     }
 
     @GetMapping()
-    public String index(Model model, Authentication authentication) {
-        List<Book> books = bookService.findAll();
-        model.addAttribute("books", books);
+    public String index(@RequestParam(value = "search", required = false) String search, Model model, Authentication authentication) {
+
+        if (search != null && !search.trim().isEmpty()) {
+            model.addAttribute("books", bookService.searchBooks(search));
+        } else {
+            model.addAttribute("books", bookService.findAll());
+        }
 
         boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
 

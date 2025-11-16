@@ -12,16 +12,49 @@
 <div class="main-container">
     <h1 class="page-title">Авторы</h1>
 
-    <div class="books-grid" th:if="${not #lists.isEmpty(authors)}">
-        <div class="book-card" th:each="author : ${authors}">
-            <a th:href="@{/authors/{id}(id=${author.id})}" class="card-link">
-                <h3 class="book-title" th:text="${author.fullName}">Имя автора</h3>
-                <div class="book-info">
-                    <p class="author-role">Автор книг</p>
-                </div>
-            </a>
+    <div class="search-section">
+        <form th:if="${isAuthenticated}" th:action="@{/authors}" method="get" class="search-form">
+            <div class="search-group">
+                <input type="text"
+                       name="search"
+                       th:value="${param.search}"
+                       placeholder="Введите полное или часть ФИО автора"
+                       class="search-input">
+                <button type="submit" class="search-btn">Найти</button>
+            </div>
+        </form>
+
+        <div th:if="${!isAuthenticated}" class="search-form">
+            <div class="search-group">
+                <input type="text"
+                       placeholder="Войдите в систему для поиска авторов"
+                       class="search-input"
+                       disabled>
+                <a th:href="@{/auth/login}" class="search-btn" style="text-decoration: none; display: inline-block;">
+                    Войти для поиска
+                </a>
+            </div>
+        </div>
+
+        <!-- Сообщение о результатах поиска (только для авторизованных) -->
+        <div th:if="${isAuthenticated and param.search != null and param.search != ''}" class="search-results-info">
+            <p>Результаты поиска для: "<span th:text="${param.search}"></span>"</p>
+            <p>Найдено авторов: <span th:text="${authors.size()}"></span></p>
         </div>
     </div>
+    <div th:if="${isAuthenticated}">
+        <div class="books-grid" th:if="${not #lists.isEmpty(authors)}">
+            <div class="book-card" th:each="author : ${authors}">
+                <a th:href="@{/authors/{id}(id=${author.id})}" class="card-link">
+                    <h3 class="book-title" th:text="${author.fullName}">Имя автора</h3>
+                    <div class="book-info">
+                        <p class="author-role">Автор книг</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
 
     <div class="empty-books-message" th:if="${#lists.isEmpty(authors)}">
         <p>Пока нет авторов в библиотеке</p>

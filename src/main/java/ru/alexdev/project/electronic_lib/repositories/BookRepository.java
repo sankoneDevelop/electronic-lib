@@ -19,4 +19,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     @Query("SELECT COUNT(b) FROM Book b")
     Integer findCountAllBooks();
+
+    @Query(value = "SELECT b FROM Book b WHERE " +
+            "LOWER(b.name) LIKE LOWER(CONCAT('%', :search, '%'))")
+    List<Book> findBySearchTerm(String search);
 }
