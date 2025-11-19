@@ -15,7 +15,7 @@ public class Reader {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @NotEmpty(message = "Фамилия не может быть пуста")
     @Size(min = 2, max = 100, message = "Длина фамилии должна быть в диапазоне от 2 до 100 символов")
@@ -44,7 +44,7 @@ public class Reader {
     private List<Book> books;
 
     @OneToMany(mappedBy = "reader")
-    private List<ReadingSession> readingSessions;
+    private List<Booking> bookings;
 
     @OneToMany(mappedBy = "reader")
     private List<Logs> logs;
@@ -59,11 +59,11 @@ public class Reader {
         this.phoneNumber = phoneNumber;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -107,12 +107,12 @@ public class Reader {
         this.books = books;
     }
 
-    public List<ReadingSession> getReadingSessions() {
-        return readingSessions;
+    public List<Booking> getReadingSessions() {
+        return bookings;
     }
 
-    public void setReadingSessions(List<ReadingSession> readingSessions) {
-        this.readingSessions = readingSessions;
+    public void setReadingSessions(List<Booking> bookings) {
+        this.bookings = bookings;
     }
 
     public List<Logs> getLogs() {
@@ -121,6 +121,18 @@ public class Reader {
 
     public void setLogs(List<Logs> logs) {
         this.logs = logs;
+    }
+
+    @Transient
+    public String getFullName() {
+        if (surname == null && name == null) {
+            return "";
+        } else if (surname == null) {
+            return name;
+        } else if (name == null) {
+            return surname;
+        }
+        return surname + " " + name;
     }
 
 }

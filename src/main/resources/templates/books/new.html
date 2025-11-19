@@ -15,13 +15,16 @@
     <label>Описание: <input type="text" th:field="*{description}"/></label>
     <br>
     <label for="author">Выберите автора книги: </label>
-    <select th:field="*{author}" id="author">
-        <option value="">-- Выберите автора --</option>
+    <select required th:field="*{author}" id="author">
+        <option value="" disabled selected>-- Выберите автора --</option>
         <option th:each="author : ${authors}"
                 th:value="${author.id}"
                 th:text="${author.fullName}">
         </option>
     </select>
+    <p>Нет нужного автора?
+    <a th:href="@{/authors/new}">Добавьте</a>
+    </p>
     <input type="submit" value="Создать"/>
 </form>
 

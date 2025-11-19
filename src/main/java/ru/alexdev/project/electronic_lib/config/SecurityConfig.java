@@ -31,7 +31,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(auth -> auth
-                        // Публичные endpoints (доступны всем)
+                        // Публичные endpoints
                         .requestMatchers(
                                 "/auth/login",
                                 "/auth/registration",
@@ -42,38 +42,39 @@ public class SecurityConfig {
                                 "/main/**"
                         ).permitAll()
 
-                        // Публичные GET запросы книг (доступны всем)
-                        .requestMatchers(HttpMethod.GET, "/books", "/books/", "/books/*").permitAll()
+                        // Книги
+                        .requestMatchers(HttpMethod.GET, "/books", "/books/*").permitAll()
+                        .requestMatchers("/books/new", "/books/**").authenticated()
 
-                        .requestMatchers("/librarians").permitAll()
-                        .requestMatchers("/librarians/**").authenticated()
-
-                        .requestMatchers("/readers").permitAll()
+                        // Читатели
+                        .requestMatchers(HttpMethod.GET, "/readers", "/readers/*").permitAll()
                         .requestMatchers("/readers/new").authenticated()
 
-                        // Действия с книгами (только для авторизованных пользователей)
-//                        .requestMatchers("/books/take/**", "/books/*/add-comment", "/books/*/return").hasAnyRole("USER", "ADMIN")
+                        // Авторы
+                        .requestMatchers(HttpMethod.GET, "/authors", "/authors/*").permitAll()
+                        .requestMatchers("/authors/new").authenticated()
 
-                        // Управление авторами (только для админов)
-                        .requestMatchers("/authors", "/authors/**").permitAll()
+                        // Бронирования
+                        .requestMatchers("/bookings/**").authenticated()
 
-                        // Админка (только для админов)
+                        // Админка
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
-                        // Все остальные запросы требуют аутентификации
-                        .anyRequest().authenticated())
-
+                        // Остальные маршруты требуют аутентификации
+                        .anyRequest().authenticated()
+                )
                 .formLogin(form -> form
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/process_login")
                         .defaultSuccessUrl("/main", true)
-                        .failureUrl("/auth/login?error"))
-
+                        .failureUrl("/auth/login?error")
+                )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/main"))
                 .exceptionHandling(exception -> exception
                         .accessDeniedPage("/access-denied"));
+
 
         return http.build();
     }

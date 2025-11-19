@@ -3,7 +3,6 @@ package ru.alexdev.project.electronic_lib.models;
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Entity
 @Table(name = "Book")
@@ -24,6 +23,9 @@ public class Book {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "available")
+    private Boolean isAvailable;
+
     @ManyToMany
     @JoinTable(
             name = "book_reader",
@@ -33,7 +35,7 @@ public class Book {
     private List<Reader> readers;
 
     @OneToMany(mappedBy = "book")
-    private List<ReadingSession> readingSessions;
+    private List<Booking> bookings;
 
     @OneToMany(mappedBy = "book")
     private List<Comment> comments;
@@ -81,12 +83,12 @@ public class Book {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public List<ReadingSession> getReadingSessions() {
-        return readingSessions;
+    public List<Booking> getBookings() {
+        return bookings;
     }
 
-    public void setReadingSessions(List<ReadingSession> readingSessions) {
-        this.readingSessions = readingSessions;
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
     }
 
     public List<Comment> getComments() {
@@ -117,5 +119,11 @@ public class Book {
         return this;
     }
 
+    public Boolean getAvailable() {
+        return isAvailable;
+    }
 
+    public void setAvailable(Boolean available) {
+        isAvailable = available;
+    }
 }

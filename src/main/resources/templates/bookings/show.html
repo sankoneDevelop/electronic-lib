@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали бронирования</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+
+<div class="book-container">
+    <h2 class="page-title">Детали бронирования</h2>
+
+    <div class="book-info">
+        <p>
+            <strong>Книга:</strong>
+            <span th:text="${booking.book != null ? booking.book.name : 'Не указана'}"></span>
+        </p>
+        <p>
+            <strong>Читатель:</strong>
+            <span th:text="${booking.reader != null ? booking.reader.surname + ' ' + booking.reader.name : 'Не указан'}"></span>
+        </p>
+        <p>
+            <strong>Статус:</strong>
+            <span th:text="${booking.status}"></span>
+        </p>
+        <p>
+            <strong>Начало:</strong>
+            <span th:text="${#temporals.format(booking.startDate, 'dd.MM.yyyy HH:mm')}"></span>
+        </p>
+        <p>
+            <strong>Конец:</strong>
+            <span th:text="${#temporals.format(booking.finishDate, 'dd.MM.yyyy HH:mm')}"></span>
+        </p>
+
+        <!-- Кнопка возврата книги, только если статус ACTIVE -->
+        <div class="book-actions" th:if="${booking.status.name() == 'ACTIVE'}">
+            <form th:action="@{/bookings/{id}/return(id=${booking.id})}" method="post">
+                <button type="submit" class="btn-return">Вернуть книгу</button>
+            </form>
+        </div>
+
+        <div class="add-book-section">
+            <a th:href="@{/bookings}" class="add-book-btn">Назад к списку</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

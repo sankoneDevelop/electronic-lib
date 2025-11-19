@@ -4,14 +4,18 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
+
 @Entity
 @Table(name = "Booking")
-public class ReadingSession {
+public class Booking {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Enumerated(EnumType.STRING)
+    private BookingStatus status;
 
     @ManyToOne
     @JoinColumn(name = "id_book", referencedColumnName = "id")
@@ -28,10 +32,11 @@ public class ReadingSession {
     private LocalDateTime finishDate;
 
 
-    public ReadingSession() {
+    public Booking() {
+        this.status = BookingStatus.ACTIVE;
     }
 
-    public ReadingSession(LocalDateTime startDate, LocalDateTime finishDate) {
+    public Booking(LocalDateTime startDate, LocalDateTime finishDate) {
         this.startDate = startDate;
         this.finishDate = finishDate;
     }
@@ -68,8 +73,6 @@ public class ReadingSession {
         this.startDate = date;
     }
 
-
-
     public LocalDateTime getFinishDate() {
         return finishDate;
     }
@@ -78,5 +81,11 @@ public class ReadingSession {
         this.finishDate = returnDate;
     }
 
+    public BookingStatus getStatus() {
+        return status;
+    }
 
+    public void setStatus(BookingStatus status) {
+        this.status = status;
+    }
 }

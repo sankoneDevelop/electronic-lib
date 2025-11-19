@@ -111,4 +111,9 @@ public class ReaderService {
         // Поиск по тексту
         return readerRepository.findBySearchTerm(trimmedTerm);
     }
+
+    public Reader findById(int id) {
+        return readerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reader not found"));
+    }
 }

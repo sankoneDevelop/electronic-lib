@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Новое бронирование</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+
+<div class="form-container">
+    <h2 class="form-title">Создать бронирование</h2>
+
+    <form th:action="@{/bookings}" th:object="${booking}" method="post" class="review-form">
+        <div class="form-group">
+            <label for="book">Книга</label>
+            <select th:field="*{book.id}" id="book">
+                <option th:each="book : ${books}"
+                        th:value="${book.id}"
+                        th:text="${book.name}">Книга</option>
+            </select>
+            <div class="error" th:if="${#fields.hasErrors('book')}" th:errors="*{book}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="reader">Читатель</label>
+            <select th:field="*{reader.id}" id="reader">
+                <option th:each="reader : ${readers}"
+                        th:value="${reader.id}"
+                        th:text="${reader.surname + ' ' + reader.name}">Читатель</option>
+            </select>
+            <div class="error" th:if="${#fields.hasErrors('reader')}" th:errors="*{reader}"></div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">Создать</button>
+            <a th:href="@{/bookings}" class="btn-cancel">Отмена</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

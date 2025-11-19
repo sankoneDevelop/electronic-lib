@@ -29,6 +29,7 @@ public class BookService {
     }
 
     public void save(Book book) {
+        book.setAvailable(true);
         bookRepository.save(book);
     }
 
@@ -61,6 +62,11 @@ public class BookService {
         String trimmedTerm = search.trim().toLowerCase();
 
         return bookRepository.findBySearchTerm(trimmedTerm);
+    }
+
+    public Book findById(int id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
     }
 
 }

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Бронирования</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+
+<div class="main-container">
+    <h1 class="page-title">Список бронирований</h1>
+
+    <!-- ДОБАВЛЯЕМ СЕКЦИЮ ПОИСКА -->
+    <div class="search-section">
+        <form th:if="${isAuthenticated}" th:action="@{/bookings}" method="get" class="search-form">
+            <div class="search-group">
+                <input type="text"
+                       name="search"
+                       th:value="${param.search}"
+                       placeholder="Введите название книги, имя читателя или статус"
+                       class="search-input">
+                <button type="submit" class="search-btn">Найти</button>
+            </div>
+        </form>
+
+        <div th:if="${!isAuthenticated}" class="search-form">
+            <div class="search-group">
+                <input type="text"
+                       placeholder="Войдите в систему для поиска бронирований"
+                       class="search-input"
+                       disabled>
+                <a th:href="@{/auth/login}" class="search-btn" style="text-decoration: none; display: inline-block;">
+                    Войти для поиска
+                </a>
+            </div>
+        </div>
+
+        <!-- Сообщение о результатах поиска -->
+        <div th:if="${isAuthenticated and param.search != null and param.search != ''}" class="search-results-info">
+            <p>Результаты поиска для: "<span th:text="${param.search}"></span>"</p>
+            <p>Найдено бронирований: <span th:text="${bookings.size()}"></span></p>
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(bookings)}" class="empty-books-message">
+        <p th:if="${param.search != null and param.search != ''}">По вашему запросу ничего не найдено.</p>
+        <p th:unless="${param.search != null and param.search != ''}">Бронирования отсутствуют.</p>
+    </div>
+
+    <div th:if="${!#lists.isEmpty(bookings)}" class="books-grid">
+        <div class="book-card" th:each="booking : ${bookings}">
+            <div class="book-info">
+                <p>
+                    <strong>Книга:</strong>
+                    <span th:if="${booking.book != null}" th:text="${booking.book.name}"></span>
+                    <span th:unless="${booking.book != null}">Не указана</span>
+                </p>
+
+                <p>
+                    <strong>Читатель:</strong>
+                    <span th:if="${booking.reader != null}" th:text="${booking.reader.fullName}"></span>
+                    <span th:unless="${booking.reader != null}">Не указан</span>
+                </p>
+
+                <p>
+                    <strong>Статус:</strong>
+                    <span th:text="${booking.status}"></span>
+                </p>
+                <p>
+                    <strong>Начало:</strong>
+                    <span th:text="${#temporals.format(booking.startDate, 'dd.MM.yyyy HH:mm')}"></span>
+                </p>
+                <p>
+                    <strong>Конец:</strong>
+                    <span th:text="${#temporals.format(booking.finishDate, 'dd.MM.yyyy HH:mm')}"></span>
+                </p>
+
+                <div class="book-actions" th:if="${booking.status == 'ACTIVE'}">
+                    <form th:action="@{/bookings/{id}/return(id=${booking.id})}" method="post">
+                        <button type="submit">Вернуть книгу</button>
+                    </form>
+                    <a th:href="@{/bookings/{id}(id=${booking.id})}" class="book-link">Подробнее</a>
+                </div>
+
+                <div class="book-actions" th:if="${booking.status != 'ACTIVE'}">
+                    <a th:href="@{/bookings/{id}(id=${booking.id})}" class="book-link">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="add-book-section">
+        <a th:href="@{/bookings/new}" class="add-book-btn">Добавить бронирование</a>
+    </div>
+</div>
+</body>
+</html>

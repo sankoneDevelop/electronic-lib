@@ -60,6 +60,8 @@
         <p>Пока нет авторов в библиотеке</p>
     </div>
 
+    <hr class="content-divider"/>
+
     <div class="add-book-section">
         <div th:if="${isAuthenticated}">
             <a th:href="@{/authors/new}" class="add-book-btn">Добавить нового автора</a>
