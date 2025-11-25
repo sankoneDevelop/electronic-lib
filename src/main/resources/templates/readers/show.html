@@ -1,26 +1,39 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Reader</title>
+    <title>Читатель</title>
     <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
 </head>
-
 <body>
-<div th:insert="~{fragments/header :: header}"> </div>
+<div th:insert="~{fragments/header :: header}"></div>
 
-<p th:text = "${reader.getSurname() + ' ' + reader.getName()}">VALUE</p>
-<p th:text="'Номер телефона: ' + ${reader.getPhoneNumber()}">VALUE</p>
-<p th:text="'Почта: ' + ${reader.getEmail()}">VALUE</p>
+<div class="main-container">
+    <!-- Информация о читателе -->
+    <div class="reader-card book-container">
+        <p class="reader-name" th:text="${reader.getSurname() + ' ' + reader.getName()}">ФИО Читателя</p>
+        <p class="reader-phone" th:text="'Телефон: ' + ${reader.getPhoneNumber()}">Телефон</p>
+        <p class="reader-email" th:text="'Почта: ' + ${reader.getEmail()}">Почта</p>
+    </div>
 
-<hr>
+    <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
 
-<div th:each="book : ${books}">
-    <a th:href="@{/books/{id}(id = ${book.getId()})}" th:text="${book.getName()}"></a>
+    <!-- Список книг читателя -->
+    <h2 class="books-title">Взятые книги</h2>
+    <div class="books-grid">
+        <div class="book-card" th:each="book : ${books}">
+            <p class="book-title">
+                <a class="book-link" th:href="@{/books/{id}(id=${book.book.id})}"
+                   th:text="${book.book.name}">Название книги</a>
+            </p>
+            <p class="book-info" th:text="'Экземпляр №' + ${book.id}">Экземпляр</p>
+
+        </div>
+        <p th:if="${#lists.isEmpty(books)}" class="no-books-message">У читателя нет взятых книг</p>
+    </div>
+
 </div>
-
 
 </body>
 </html>

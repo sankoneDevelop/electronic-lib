@@ -42,14 +42,6 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    public List<Book> getBooksByReaderId(int id) {
-        return bookRepository.findBooksByReaderId(id);
-    }
-
-    public int getCountTakenBooks() {
-        return bookRepository.findCountTakenBooks();
-    }
-
     public int getCountAllBooks() {
         return bookRepository.findCountAllBooks();
     }

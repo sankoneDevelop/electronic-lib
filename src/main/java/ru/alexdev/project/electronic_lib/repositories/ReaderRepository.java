@@ -12,8 +12,8 @@ import java.util.Optional;
 @Repository
 public interface ReaderRepository extends JpaRepository<Reader, Integer> {
 
-    @Query("SELECT r FROM Reader r LEFT JOIN FETCH r.books WHERE r.id = :id")
-    Optional<Reader> findByIdWithBooks(@Param("id") int id);
+    @Query("SELECT r FROM Reader r LEFT JOIN FETCH r.bookings WHERE r.id = :id")
+    Optional<Reader> findByIdWithBookings(@Param("id") int id);
 
     Optional<Reader> findByPhoneNumber(String phoneNumber);
 

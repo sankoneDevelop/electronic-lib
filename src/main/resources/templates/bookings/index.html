@@ -12,7 +12,6 @@
 <div class="main-container">
     <h1 class="page-title">Список бронирований</h1>
 
-    <!-- ДОБАВЛЯЕМ СЕКЦИЮ ПОИСКА -->
     <div class="search-section">
         <form th:if="${isAuthenticated}" th:action="@{/bookings}" method="get" class="search-form">
             <div class="search-group">
@@ -54,9 +53,14 @@
             <div class="book-info">
                 <p>
                     <strong>Книга:</strong>
-                    <span th:if="${booking.book != null}" th:text="${booking.book.name}"></span>
-                    <span th:unless="${booking.book != null}">Не указана</span>
+                    <span th:if="${booking.bookCopy != null and booking.bookCopy.book != null}"
+                          th:text="${booking.bookCopy.book.name}"></span>
+                    <span th:unless="${booking.bookCopy != null and booking.bookCopy.book != null}">Не указана</span>
+                    <span th:if="${booking.bookCopy != null}">
+        (экземпляр №<span th:text="${booking.bookCopy.id}"></span>)
+    </span>
                 </p>
+
 
                 <p>
                     <strong>Читатель:</strong>

@@ -7,9 +7,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.alexdev.project.electronic_lib.models.BookCopy;
+import ru.alexdev.project.electronic_lib.models.Booking;
 import ru.alexdev.project.electronic_lib.models.Reader;
 import ru.alexdev.project.electronic_lib.services.BookService;
+import ru.alexdev.project.electronic_lib.services.BookingService;
 import ru.alexdev.project.electronic_lib.services.ReaderService;
+import ru.alexdev.project.electronic_lib.models.BookingStatus;
+import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/readers")
@@ -17,11 +23,13 @@ public class ReaderController {
 
     private final BookService bookService;
     private final ReaderService readerService;
+    private final BookingService bookingService;
 
     @Autowired
-    public ReaderController(BookService bookService, ReaderService readerService) {
+    public ReaderController(BookService bookService, ReaderService readerService, BookingService bookingService) {
         this.bookService = bookService;
         this.readerService = readerService;
+        this.bookingService = bookingService;
     }
 
     @GetMapping()
@@ -43,11 +51,29 @@ public class ReaderController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("reader", readerService.findOne(id));
+        Reader reader = readerService.findOne(id);
+        if (reader == null) {
+            return "redirect:/readers";
+        }
+        model.addAttribute("reader", reader);
 
-        model.addAttribute("books", bookService.getBooksByReaderId(id));
+        // Получаем только активные бронирования через сервис
+        List<Booking> activeBookings = bookingService.findByReaderAndStatus(reader, BookingStatus.ACTIVE);
+
+        // Преобразуем в список BookCopy для Thymeleaf
+        List<BookCopy> activeBooks = activeBookings.stream()
+                .map(Booking::getBookCopy)
+                .filter(Objects::nonNull)
+                .toList();
+
+        model.addAttribute("books", activeBooks);
+
         return "readers/show";
     }
+
+
+
+
 
     @PostMapping()
     public String create(@ModelAttribute("reader") @Valid Reader reader,

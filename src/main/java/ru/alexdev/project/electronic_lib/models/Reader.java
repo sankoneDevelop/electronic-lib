@@ -15,7 +15,7 @@ public class Reader {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @NotEmpty(message = "Фамилия не может быть пуста")
     @Size(min = 2, max = 100, message = "Длина фамилии должна быть в диапазоне от 2 до 100 символов")
@@ -40,9 +40,6 @@ public class Reader {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @ManyToMany(mappedBy = "readers")
-    private List<Book> books;
-
     @OneToMany(mappedBy = "reader")
     private List<Booking> bookings;
 
@@ -59,11 +56,11 @@ public class Reader {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -99,13 +96,6 @@ public class Reader {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
 
     public List<Booking> getReadingSessions() {
         return bookings;
@@ -121,6 +111,14 @@ public class Reader {
 
     public void setLogs(List<Logs> logs) {
         this.logs = logs;
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
     }
 
     @Transient

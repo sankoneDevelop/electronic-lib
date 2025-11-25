@@ -11,12 +11,6 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
-    @Query("SELECT b FROM Book b JOIN b.readers r WHERE  r.id = :id ")
-    List<Book> findBooksByReaderId(@Param("id") int id);
-
-    @Query("SELECT COUNT(b) FROM Book b WHERE SIZE(b.readers) > 0")
-    Integer findCountTakenBooks();
-
     @Query("SELECT COUNT(b) FROM Book b")
     Integer findCountAllBooks();
 

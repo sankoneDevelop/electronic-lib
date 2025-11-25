@@ -21,11 +21,8 @@ public class MainController {
     @GetMapping()
     public String mainPage(Model model) {
 
-        int countTakenBooks = bookService.getCountTakenBooks();
-
         int countAllBooks = bookService.getCountAllBooks();
 
-        model.addAttribute("countTakenBooks", countTakenBooks);
         model.addAttribute("countAllBooks", countAllBooks);
         return "main/index";
     }

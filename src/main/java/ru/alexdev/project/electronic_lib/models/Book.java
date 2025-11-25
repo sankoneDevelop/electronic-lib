@@ -1,7 +1,6 @@
 package ru.alexdev.project.electronic_lib.models;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
@@ -9,7 +8,6 @@ import java.util.List;
 public class Book {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -26,19 +24,14 @@ public class Book {
     @Column(name = "available")
     private Boolean isAvailable;
 
-    @ManyToMany
-    @JoinTable(
-            name = "book_reader",
-            joinColumns = @JoinColumn(name = "id_book"),
-            inverseJoinColumns = @JoinColumn(name = "id_reader")
-    )
-    private List<Reader> readers;
-
+    // Убираем старое поле bookings
+    // Добавляем связь через BookCopy (если нужно)
     @OneToMany(mappedBy = "book")
-    private List<Booking> bookings;
+    private List<BookCopy> copies;
 
     @OneToMany(mappedBy = "book")
     private List<Comment> comments;
+
 
     @ManyToMany
     @JoinTable(
@@ -51,6 +44,18 @@ public class Book {
     @OneToMany(mappedBy = "book")
     private List<Logs> logs;
 
+    @Transient
+    private int copiesCount = 1;  // не сохраняется в БД
+
+    public int getCopiesCount() {
+        return copiesCount;
+    }
+
+    public void setCopiesCount(int copiesCount) {
+        this.copiesCount = copiesCount;
+    }
+    // количество копий, которое мы хотим создать
+
     public Book() {}
 
     public Book(String description, String name) {
@@ -58,24 +63,12 @@ public class Book {
         this.name = name;
     }
 
+    // getters/setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
-    public List<Reader> getReaders() {
-        return readers;
-    }
-
-    public void setReaders(List<Reader> readers) {
-        this.readers = readers;
-    }
-
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
+    public Author getAuthor() { return author; }
+    public void setAuthor(Author author) { this.author = author; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
@@ -83,47 +76,19 @@ public class Book {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public List<Booking> getBookings() {
-        return bookings;
-    }
+    public List<BookCopy> getCopies() { return copies; }
+    public void setCopies(List<BookCopy> copies) { this.copies = copies; }
 
-    public void setBookings(List<Booking> bookings) {
-        this.bookings = bookings;
-    }
+    public List<Comment> getComments() { return comments; }
+    public void setComments(List<Comment> comments) { this.comments = comments; }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
+    public List<Genre> getGenres() { return genres; }
+    public void setGenres(List<Genre> genres) { this.genres = genres; }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
+    public List<Logs> getLogs() { return logs; }
+    public void setLogs(List<Logs> logs) { this.logs = logs; }
 
-    public List<Genre> getGenres() {
-        return genres;
-    }
+    public Boolean getAvailable() { return isAvailable; }
+    public void setAvailable(Boolean available) { isAvailable = available; }
 
-    public void setGenres(List<Genre> genres) {
-        this.genres = genres;
-    }
-
-    public List<Logs> getLogs() {
-        return logs;
-    }
-
-    public void setLogs(List<Logs> logs) {
-        this.logs = logs;
-    }
-
-    public Book getBook() {
-        return this;
-    }
-
-    public Boolean getAvailable() {
-        return isAvailable;
-    }
-
-    public void setAvailable(Boolean available) {
-        isAvailable = available;
-    }
 }

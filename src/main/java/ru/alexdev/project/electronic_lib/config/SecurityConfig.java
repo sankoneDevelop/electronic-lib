@@ -31,7 +31,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(auth -> auth
-                        // Публичные endpoints
+
                         .requestMatchers(
                                 "/auth/login",
                                 "/auth/registration",
@@ -42,25 +42,17 @@ public class SecurityConfig {
                                 "/main/**"
                         ).permitAll()
 
-                        // Книги
-                        .requestMatchers(HttpMethod.GET, "/books", "/books/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/books").permitAll()
                         .requestMatchers("/books/new", "/books/**").authenticated()
 
-                        // Читатели
-                        .requestMatchers(HttpMethod.GET, "/readers", "/readers/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/readers").permitAll()
                         .requestMatchers("/readers/new").authenticated()
 
-                        // Авторы
-                        .requestMatchers(HttpMethod.GET, "/authors", "/authors/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/authors").permitAll()
                         .requestMatchers("/authors/new").authenticated()
 
-                        // Бронирования
                         .requestMatchers("/bookings/**").authenticated()
 
-                        // Админка
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-
-                        // Остальные маршруты требуют аутентификации
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

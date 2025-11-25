@@ -31,8 +31,10 @@ public class ReaderService {
     }
 
     public Reader findOne(int id) {
-        return readerRepository.findById(id).orElse(null);
+        return readerRepository.findByIdWithBookings(id)
+                .orElseThrow(() -> new RuntimeException("Reader not found"));
     }
+
 
     public void save(Reader reader) {
         // Проверка уникальности email

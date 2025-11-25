@@ -16,8 +16,12 @@
     <div class="book-info">
         <p>
             <strong>Книга:</strong>
-            <span th:text="${booking.book != null ? booking.book.name : 'Не указана'}"></span>
+            <span th:text="${booking.bookCopy != null ? booking.bookCopy.book.name : 'Не указана'}"></span>
+            <span th:if="${booking.bookCopy != null}">
+        (экземпляр №<span th:text="${booking.bookCopy.id}"></span>)
+    </span>
         </p>
+
         <p>
             <strong>Читатель:</strong>
             <span th:text="${booking.reader != null ? booking.reader.surname + ' ' + booking.reader.name : 'Не указан'}"></span>

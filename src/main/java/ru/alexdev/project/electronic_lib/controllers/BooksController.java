@@ -1,5 +1,6 @@
 package ru.alexdev.project.electronic_lib.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -9,22 +10,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
-import ru.alexdev.project.electronic_lib.models.AuthUser;
-import ru.alexdev.project.electronic_lib.models.Book;
-import ru.alexdev.project.electronic_lib.models.Comment;
-import ru.alexdev.project.electronic_lib.models.Reader;
+import ru.alexdev.project.electronic_lib.models.*;
 import ru.alexdev.project.electronic_lib.repositories.ReaderRepository;
 import ru.alexdev.project.electronic_lib.services.*;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/books")
@@ -32,16 +23,14 @@ public class BooksController {
 
     private final BookService bookService;
     private final AuthorService authorService;
-    private final ReaderService readerService;
-    private final CommentService commentService;
+    private final BookCopyService bookCopyService;
 
 
     @Autowired
-    public BooksController(BookService bookService, AuthorService authorService, ReaderService readerService, AuthUserService authUserService, ReaderRepository readerRepository, CommentService commentService, CommentService commentService1) {
+    public BooksController(BookService bookService, AuthorService authorService, BookCopyService bookCopyService) {
         this.bookService = bookService;
         this.authorService = authorService;
-        this.readerService = readerService;
-        this.commentService = commentService1;
+        this.bookCopyService = bookCopyService;
     }
 
     @GetMapping()
@@ -83,11 +72,31 @@ public class BooksController {
         return "books/edit";
     }
 
-    @PostMapping()
-    public String create(@ModelAttribute("book") Book book) {
+    @PostMapping
+    public String create(@ModelAttribute("book") @Valid Book book,
+                         BindingResult bindingResult,
+                         Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("authors", authorService.findAll());
+            return "books/new";
+        }
+
         bookService.save(book);
+
+        int count = book.getCopiesCount();
+        for (int i = 0; i < count; i++) {
+            BookCopy copy = new BookCopy();
+            copy.setBook(book);
+            copy.setAvailable(true);
+            copy.setCondition("Новая");
+            bookCopyService.save(copy);
+        }
+
         return "redirect:/books";
     }
+
+
 
     @GetMapping("/new")
     public String newBook(@ModelAttribute("book") Book book, Model model) {

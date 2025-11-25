@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <title>Новое бронирование</title>
     <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
 </head>
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
@@ -13,23 +11,31 @@
 <div class="form-container">
     <h2 class="form-title">Создать бронирование</h2>
 
-    <form th:action="@{/bookings}" th:object="${booking}" method="post" class="review-form">
+    <form th:action="@{/bookings}" th:object="${booking}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+        <!-- Выбор копии книги -->
         <div class="form-group">
-            <label for="book">Книга</label>
-            <select th:field="*{book.id}" id="book">
-                <option th:each="book : ${books}"
-                        th:value="${book.id}"
-                        th:text="${book.name}">Книга</option>
+            <label for="bookCopy">Копия книги</label>
+            <select th:field="*{bookCopy.id}" id="bookCopy">
+                <option value="">-- Выберите книгу --</option>
+                <option th:each="copy : ${copies}"
+                        th:value="${copy.id}"
+                        th:text="${copy.book.name + ' (экз. #' + copy.id + ', ' + copy.condition + ')'}">
+                </option>
             </select>
-            <div class="error" th:if="${#fields.hasErrors('book')}" th:errors="*{book}"></div>
+            <div class="error" th:if="${#fields.hasErrors('bookCopy')}" th:errors="*{bookCopy}"></div>
         </div>
 
+        <!-- Выбор читателя -->
         <div class="form-group">
             <label for="reader">Читатель</label>
             <select th:field="*{reader.id}" id="reader">
+                <option value="">-- Выберите читателя --</option>
                 <option th:each="reader : ${readers}"
                         th:value="${reader.id}"
-                        th:text="${reader.surname + ' ' + reader.name}">Читатель</option>
+                        th:text="${reader.surname + ' ' + reader.name}">
+                </option>
             </select>
             <div class="error" th:if="${#fields.hasErrors('reader')}" th:errors="*{reader}"></div>
         </div>
